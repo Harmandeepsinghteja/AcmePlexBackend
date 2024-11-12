@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface scheduleRepository extends JpaRepository<schedule, Integer> {
     
-    List<schedule> findById(int id);
+    
 
     @Query(value = "SELECT * FROM schedule WHERE movie_id = ?1", nativeQuery = true)
     List<schedule> findByMovieId(int id);

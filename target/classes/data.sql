@@ -1,5 +1,11 @@
 CREATE DATABASE IF NOT EXISTS test;
 USE test;
+-- Truncate all tables
+TRUNCATE TABLE movie;
+TRUNCATE TABLE schedule;
+TRUNCATE TABLE screen;
+
+
 INSERT INTO movie (id,title, added_date,url) 
 VALUES (1,'Interstellar Public','2024-08-24','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/45fc99105415493.619ded0619991.jpg');
 
@@ -27,8 +33,31 @@ VALUES (2,1,1,'2024-11-01 14:00:00', 10.0);
 
 
 INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
-VALUES (3,1,1,'2024-11-01 17:00:00', 10.0);
+VALUES (3,1,1,'2024-11-03 17:00:00', 10.0);
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (5,1,2,'2024-11-01 17:00:00', 10.0);
+
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (6,1,2,'2024-11-04 17:00:00', 10.0);
+
+
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (4,2,1,'2024-11-01 17:00:00', 10.0);
+
+
 
 
 INSERT INTO screen (id, screen_name, length,wide,capacity)
 VALUES (1,'Screen 1', 5,10,50);
+
+INSERT INTO screen (id, screen_name, length,wide,capacity)
+VALUES (2,'Screen 2', 5,10,50);
+
+INSERT INTO screen (id, screen_name, length,wide,capacity)
+VALUES (3,'Screen 3', 5,10,50);
+
+INSERT INTO screen (id, screen_name, length,wide,capacity)
+VALUES (4,'Screen 4', 5,10,50);
