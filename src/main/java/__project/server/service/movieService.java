@@ -19,5 +19,10 @@ public class movieService {
         return movieRepository.findMovieAddedGreaterThanOneWeek();
     }
 
+    public int getMovieId(String title) {
+        int id = movieRepository.findByTitle(title);  
+        System.out.println("id" + id);
+        return id;}
+
 
 }

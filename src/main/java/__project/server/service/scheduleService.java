@@ -13,6 +13,8 @@ public class scheduleService {
     private scheduleRepository scheduleRepository;
     @Autowired
     private screenService screenService;
+    @Autowired
+    private movieService movieService;
 
 
     public List<schedule> getShowTimes(int id) {
@@ -21,6 +23,12 @@ public class scheduleService {
 
     public String getScreenName(int id) {
         return screenService.getScreenName(id);
+    }
+
+    public List<schedule> getShowTimesByName(String movieName) {
+        System.out.println("movieName" + movieName);
+        int id = movieService.getMovieId(movieName);
+        return getShowTimes(id);
     }
 
 
