@@ -4,6 +4,7 @@ USE test;
 TRUNCATE TABLE movie;
 TRUNCATE TABLE schedule;
 TRUNCATE TABLE screen;
+TRUNCATE TABLE seat;
 
 
 INSERT INTO movie (id,title, added_date,url) 
@@ -78,13 +79,29 @@ VALUES (13,4,1,'2024-11-30 08:00:00', 10.0);
 
 
 INSERT INTO screen (id, screen_name, length,wide,capacity)
-VALUES (1,'Screen 1', 5,10,50);
+VALUES (1,'Screen 1', 1,5,5);
 
 INSERT INTO screen (id, screen_name, length,wide,capacity)
-VALUES (2,'Screen 2', 5,10,50);
+VALUES (2,'Screen 2', 1,5,5);
 
 INSERT INTO screen (id, screen_name, length,wide,capacity)
-VALUES (3,'Screen 3', 5,10,50);
+VALUES (3,'Screen 3', 1,5,5);
 
 INSERT INTO screen (id, screen_name, length,wide,capacity)
-VALUES (4,'Screen 4', 5,10,50);
+VALUES (4,'Screen 4', 1,5,5);
+
+
+
+
+Insert into seat (schedule_id,is_avaliable,seat_number)
+VALUES (1,True,1);
+
+Insert into seat (schedule_id,is_avaliable,seat_number)
+VALUES (1,True,2);
+Insert into seat (schedule_id,is_avaliable,seat_number)
+VALUES (1,True,3);
+Insert into seat (schedule_id,is_avaliable,seat_number)
+VALUES (1,True,4);
+Insert into seat (schedule_id,is_avaliable,seat_number)
+VALUES (1,True,5);
+

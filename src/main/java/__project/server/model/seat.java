@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@IdClass(SeatId.class)
-public class Seat {
+@IdClass(seatId.class)
+public class seat {
 
     @Id
     private int scheduleId;
