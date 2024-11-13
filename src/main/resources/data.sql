@@ -47,6 +47,33 @@ VALUES (6,1,2,'2024-11-04 17:00:00', 10.0);
 INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
 VALUES (4,2,1,'2024-11-01 17:00:00', 10.0);
 
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (10,3,1,'2024-11-23 17:00:00', 10.0);
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (7,3,1,'2024-11-23 08:00:00', 10.0);
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (9,3,1,'2024-11-30 08:00:00', 10.0);
+
+
+
+
+
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (11,4,1,'2024-11-23 17:00:00', 10.0);
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (12,4,1,'2024-11-23 08:00:00', 10.0);
+
+INSERT INTO schedule (id, movie_id, screen_id, start_time, price)
+VALUES (13,4,1,'2024-11-30 08:00:00', 10.0);
+
+
+
+
+
 
 
 
