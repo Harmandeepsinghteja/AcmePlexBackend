@@ -42,4 +42,13 @@ public class movieController {
 
         return ResponseEntity.ok(response);
 }
+
+    @GetMapping("/is-movie-public/{id}")
+    public boolean isMoviePublic(@PathVariable("id") int id) {
+        boolean isPublic = movieService.isMoviePublic(id);
+
+        return isPublic;
+    }
+
+
 }
