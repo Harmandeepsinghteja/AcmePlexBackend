@@ -14,14 +14,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.Map;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/")
 @RestController
-@CrossOrigin
 public class movieController {
 
     @Autowired
@@ -49,6 +51,17 @@ public class movieController {
 
         return isPublic;
     }
+    
 
 
+    @PostMapping(value = "/is-public-movie")
+    public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, Integer> request) {
+    Integer id = request.get("id");
+    System.out.println("id: " + id);
+    if (id == null) {
+        return ResponseEntity.badRequest().body(false);
+    }
+    boolean isPublic = movieService.isMoviePublic(id);
+    return ResponseEntity.ok(isPublic);
+}
 }
