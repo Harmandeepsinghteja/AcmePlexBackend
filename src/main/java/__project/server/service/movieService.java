@@ -19,10 +19,20 @@ public class movieService {
         return movieRepository.findMovieAddedGreaterThanOneWeek();
     }
 
+    public boolean isMoviePublic(int id) {
+        List<movie> movies= movieRepository.isMovieAddedGreaterThanOneWeek(id);
+        return movies.size() > 0;
+    }
+
     public int getMovieId(String title) {
-        int id = movieRepository.findByTitle(title);  
+        int id = movieRepository.findByMovieName(title);  
         System.out.println("id" + id);
         return id;}
+
+    public List<movie> getNonPublicMovies() {
+        
+        return movieRepository.findMovieAddedLessThanOneWeek();
+    }
 
 
 }

@@ -12,10 +12,10 @@ public interface scheduleRepository extends JpaRepository<schedule, Integer> {
     
     
 
-    @Query(value = "SELECT * FROM schedule WHERE movie_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM schedule WHERE movieId = ?1", nativeQuery = true)
     List<schedule> findByMovieId(int id);
 
-    @Query(value = "SELECT * FROM schedule WHERE LOWER(movie_name)=LOWER(?1)", nativeQuery = true)
+    @Query(value = "SELECT * FROM schedule WHERE LOWER(movieName)=LOWER(?1)", nativeQuery = true)
     List<schedule> findByMovieName(String movieName);
 
 }
