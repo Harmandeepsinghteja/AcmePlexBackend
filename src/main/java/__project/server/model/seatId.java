@@ -3,6 +3,8 @@ import java.io.Serializable;
 
 
 public class seatId implements Serializable {
+
+    
     private Integer scheduleId;
     private Integer seatNumber;
 
