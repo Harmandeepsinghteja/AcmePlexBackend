@@ -11,6 +11,6 @@ import __project.server.model.seat;
 public interface seatRepository extends JpaRepository<seat, Integer>{
 
 
-    @Query(value = "SELECT is_avaliable FROM seat WHERE schedule_id = ?1 AND seat_number = ?2", nativeQuery = true)
+    @Query(value = "SELECT is_avaliable FROM seat WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
     public int findById(int id, int seat_number);
 }

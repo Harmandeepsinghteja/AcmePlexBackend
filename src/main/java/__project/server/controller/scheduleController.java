@@ -23,7 +23,7 @@ import __project.server.service.scheduleService;
 import __project.server.model.schedule;
 import java.util.Date;
 import java.util.Set;
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/")
 @RestController
@@ -33,8 +33,10 @@ public class scheduleController {
     @Autowired
     private scheduleService scheduleService;
 
-    @GetMapping("/showtimes/{movieId}")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@PathVariable int movieId) {
+    @GetMapping("/showtimes")
+    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, Object> requestBody) {
+
+        int movieId = (int) requestBody.get("movieId");
         List<schedule> schedules = scheduleService.getShowTimes(movieId);
         
         Map<String, Map<Integer, Set<String>>> groupedSchedules = new TreeMap<>();

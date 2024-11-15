@@ -26,7 +26,7 @@ public class scheduleService {
     }
 
     public List<schedule> getShowTimesByName(String movieName) {
-        System.out.println("movieName" + movieName);
+        // System.out.println("movieName" + movieName);
         int id = movieService.getMovieId(movieName);
         return getShowTimes(id);
     }
