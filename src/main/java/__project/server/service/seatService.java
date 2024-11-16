@@ -17,7 +17,7 @@ public class seatService {
 
     public ArrayList<ArrayList<Boolean>> getSeats(int id)  {
         
-        int row = 2;
+        int row = 5;
         int col =10;
         ArrayList<ArrayList<Boolean>>  seat_map = new ArrayList<ArrayList<Boolean>>();
         for(int i=0; i<row; i++){
