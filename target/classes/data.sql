@@ -28,8 +28,8 @@ create table if not exists schedule (
     screenId int null,
     startTime timestamp not null,
     price decimal(10, 2) not null,
-    constraint schedules_movies_id_fk foreign key (movieId) references movie (id),
-    constraint schedules_screens_id_fk foreign key (screenId) references screen (id)
+    constraint schedule_movie_id_fk foreign key (movieId) references movie (id),
+    constraint schedule_screen_id_fk foreign key (screenId) references screen (id)
 );
 
 DROP TABLE IF EXISTS seat;
@@ -39,7 +39,7 @@ create table if not exists seat (
     seatNumber int not null,
     isAvaliable tinyint(1) default 1 null,
     primary key (seatNumber, scheduleId),
-    constraint schedules_seats_schedules_id_fk foreign key (scheduleId) references schedule (id)
+    constraint schedule_seat_schedule_id_fk foreign key (scheduleId) references schedule (id)
 );
 
 DROP TABLE IF EXISTS users;
@@ -88,7 +88,7 @@ BEGIN
 	DECLARE i INT DEFAULT 1;
 	DECLARE screen_capacity INT;
 
-    SELECT capacity INTO screen_capacity FROM screens WHERE id = p_screenId;
+    SELECT capacity INTO screen_capacity FROM screen WHERE id = p_screenId;
 
     WHILE i <= screen_capacity DO
             INSERT INTO seat (scheduleId, seatNumber)
@@ -127,10 +127,10 @@ DELIMITER ;
 -- CREATE DATABASE IF NOT EXISTS test;
 -- USE test;
 -- Truncate all tables
-TRUNCATE TABLE movie;
-TRUNCATE TABLE schedule;
-TRUNCATE TABLE screen;
-TRUNCATE TABLE seat;
+-- TRUNCATE TABLE movie;
+-- TRUNCATE TABLE schedule;
+-- TRUNCATE TABLE screen;
+-- TRUNCATE TABLE seat;
 
 
 INSERT INTO movie (id,movieName, addedDate,url) 
@@ -150,6 +150,30 @@ VALUES (4,'Inception Public','2024-11-01','https://flxt.tmsimg.com/assets/p78256
 
 INSERT INTO movie (id,movieName, addedDate,url) 
 VALUES (5,'The Dark Knight Rises Public','2024-11-13','https://th.bing.com/th/id/OIP.ILrjvLryU-PMd7Cl7Yh7QQHaK-?rs=1&pid=ImgDetMain');
+
+
+
+
+
+
+
+
+INSERT INTO screen (id, screenName, length,width)
+VALUES (1,'1', 5,10);
+
+INSERT INTO screen (id, screenName, length,width)
+VALUES (2,'2', 5,10);
+
+INSERT INTO screen (id, screenName, length,width)
+VALUES (3,'3', 5,10);
+
+INSERT INTO screen (id, screenName, length,width)
+VALUES (4,'4', 5,10);
+
+
+
+
+
 
 
 INSERT INTO schedule (id, movieId, screenId, startTime, price)
@@ -203,65 +227,52 @@ VALUES (13,4,1,'2024-11-30 08:00:00', 10.0);
 
 
 
-INSERT INTO screen (id, screenName, length,width)
-VALUES (1,'Screen 1', 1,5);
-
-INSERT INTO screen (id, screenName, length,width)
-VALUES (2,'Screen 2', 1,5);
-
-INSERT INTO screen (id, screenName, length,width)
-VALUES (3,'Screen 3', 1,5);
-
-INSERT INTO screen (id, screenName, length,width)
-VALUES (4,'Screen 4', 1,5);
 
 
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,1);
 
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,2);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,3);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,4);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,5);
 
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,1);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,6);
 
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,2);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,3);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,4);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,5);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,7);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,8);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,9);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,10);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,11);
 
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,6);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,12);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,13);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,14);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,15);
 
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,7);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,8);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,9);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,10);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,11);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,16);
 
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,12);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,13);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,14);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,15);
-
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,16);
-
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,17);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,18);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,19);
-Insert into seat (scheduleId,isAvaliable,seatNumber)
-VALUES (1,True,20);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,17);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,18);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,19);
+-- Insert into seat (scheduleId,isAvaliable,seatNumber)
+-- VALUES (1,True,20);
 
