@@ -1,6 +1,13 @@
 CREATE DATABASE IF NOT EXISTS movie_theater;
 USE movie_theater;
 
+
+DROP TABLE IF EXISTS credits_refund;
+DROP TABLE IF EXISTS payment;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS seat;
+DROP TABLE IF EXISTS schedule;
+DROP TABLE IF EXISTS screen;
 DROP TABLE IF EXISTS movie;
 
 create table if not exists movie (
@@ -10,7 +17,7 @@ create table if not exists movie (
     url varchar(2048) null
 );
 
-DROP TABLE IF EXISTS screen;
+
 
 create table if not exists screen (
     id int auto_increment primary key,
@@ -20,7 +27,7 @@ create table if not exists screen (
     capacity int as (width * length) stored
 );
 
-DROP TABLE IF EXISTS schedule;
+
 
 create table if not exists schedule (
     id int auto_increment primary key,
@@ -32,7 +39,7 @@ create table if not exists schedule (
     constraint schedule_screen_id_fk foreign key (screenId) references screen (id)
 );
 
-DROP TABLE IF EXISTS seat;
+
 
 create table if not exists seat (
     scheduleId int not null,
@@ -42,7 +49,7 @@ create table if not exists seat (
     constraint schedule_seat_schedule_id_fk foreign key (scheduleId) references schedule (id)
 );
 
-DROP TABLE IF EXISTS users;
+
 
 create table if not exists users (
     id int auto_increment primary key,
@@ -53,7 +60,7 @@ create table if not exists users (
     membershipExpiryDate timestamp null
 );
 
-DROP TABLE IF EXISTS payment;
+
 
 create table if not exists payment (
     id int auto_increment primary key,
@@ -71,7 +78,7 @@ create table if not exists payment (
     constraint transactions_schedules_seats_scheduleId_seatNumber_fk foreign key (scheduleId, seatNumber) references seat (scheduleId, seatNumber)
 );
 
-DROP TABLE IF EXISTS credits_refund;
+
 
 create table if not exists credits_refund (
     paymentId int not null primary key,
