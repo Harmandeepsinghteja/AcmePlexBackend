@@ -230,3 +230,38 @@ VALUES (1,True,4);
 Insert into seat (scheduleId,isAvaliable,seatNumber)
 VALUES (1,True,5);
 
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,6);
+
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,7);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,8);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,9);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,10);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,11);
+
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,12);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,13);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,14);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,15);
+
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,16);
+
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,17);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,18);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,19);
+Insert into seat (scheduleId,isAvaliable,seatNumber)
+VALUES (1,True,20);
+
