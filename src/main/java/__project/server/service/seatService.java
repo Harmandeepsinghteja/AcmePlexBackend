@@ -23,15 +23,19 @@ public class seatService {
         for(int i=0; i<row; i++){
             ArrayList<Boolean> row_list = new ArrayList<Boolean>();
             for(int j=1; j<=col; j++){
-            System.out.println("Seat Number " + i*col + j);
-            int isAvaliable = 0;
+            int seatNumber = i*col + j;
+            System.out.println("Seat Number " + seatNumber);
+            Boolean isAvaliable = false;
             try{
-                isAvaliable = seatRepository.findById(id, i*col + j);
+            
+                isAvaliable = seatRepository.findById(id, seatNumber);
+            System.out.println("seatNumber " + seatNumber + " isAvaliable " + isAvaliable);
+
             }
             catch(Exception e){
                 System.out.println("Error " + e);
             }
-            if(isAvaliable == 1){
+            if(isAvaliable){
                 row_list.add(true);
             }
             else{
@@ -49,4 +53,10 @@ public class seatService {
         return seat_map;
     }
 
+
+
+    public void reserveSeat(int screenId, int seatId) {
+        System.out.println("Reserving seat " + seatId + " for screen " + screenId);
+        seatRepository.reserveSeat(screenId, seatId);
+    }
 }
