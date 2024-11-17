@@ -70,16 +70,17 @@ public class SeatController {
 
 
 
-    // @GetMapping("/is-non-public-seats-filled")
-    // public Boolean getNonPublicSeatsFilled(@RequestBody Map<String, String> request) {
-    //     String movieId =  request.get("movieId").toString() ;
-    //     String screenId = request.get("screenId").toString();
-    //     String date = request.get("date").toString();
-    //     String time = request.get("time").toString();
-    //     int screenIdInt = Integer.parseInt(screenId);
+    @GetMapping("/is-non-public-seats-filled")
+    public Boolean getNonPublicSeatsFilled(@RequestBody Map<String, String> request) {
+        String movieId =  request.get("movieId").toString() ;
+        String screenId = request.get("screenId").toString();
+        String date = request.get("date").toString();
+        String time = request.get("time").toString();
+        int screenIdInt = Integer.parseInt(screenId);
+        int movieIdInt = Integer.parseInt(movieId);
 
-    //     return seatService.isNonPublicSeatsFilled(screenIdInt);
-    // }
+        return seatService.isNonPublicSeatsFilled(movieIdInt, screenIdInt, date, time);
+    }
 
 
 

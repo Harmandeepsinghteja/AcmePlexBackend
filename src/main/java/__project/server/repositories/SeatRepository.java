@@ -23,4 +23,7 @@ public interface SeatRepository extends JpaRepository<seat, Integer>{
     public void reserveSeat(int screenId, int seatId);
 
 
+
+ 
+
 }
