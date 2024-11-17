@@ -61,17 +61,17 @@ public class SeatService {
 
 
 
-    public void reserveSeat(int screenId, int seatId) {
-        System.out.println("Reserving seat " + seatId + " for screen " + screenId);
-        seatRepository.reserveSeat(screenId, seatId);
+    public void reserveSeat(int scheduleId, int seatId) {
+        System.out.println("Reserving seat " + seatId + " for schedule " + scheduleId);
+        seatRepository.reserveSeat(scheduleId, seatId);
     }
 
 
 
 
-    public Boolean isNonPublicSeatsFilled(int movieId, int screenId, LocalDateTime date) {
+    public Boolean isNonPublicSeatsFilled(int screenIdFromSchedule) {
 
-        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(movieId, screenId, date);
+        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenIdFromSchedule);
         int totalSeatsBooked=0;
 
         for(int i=0; i<5; i++){

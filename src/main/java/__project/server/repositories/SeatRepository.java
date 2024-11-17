@@ -17,11 +17,11 @@ public interface SeatRepository extends JpaRepository<seat, Integer>{
     public Boolean findByScheduleId(int id, int seat_number);
 
  
-    
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE seat SET isAvaliable = 0 WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
-    public void reserveSeat(int screenId, int seatId);
+    public void reserveSeat(int scheduleId, int seatId);
 
 
 

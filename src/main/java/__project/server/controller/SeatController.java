@@ -46,9 +46,7 @@ public class SeatController {
         LocalDate date = LocalDate.parse(dateString);
         LocalTime time = LocalTime.parse(timeString);
         LocalDateTime combined =  LocalDateTime.of(date, time);
-        System.out.println("combined: " + combined);
         Timestamp timestampDate = Timestamp.valueOf(combined);
-        System.out.println("Timestamp: " + timestampDate);
 
         int screenIdFromSchedule = scheduleService.getScreenId(movieIdInt,screenIdInt,timestampDate);
 
@@ -56,14 +54,6 @@ public class SeatController {
             System.out.println("Screen Id not found");
             return new ArrayList<ArrayList<Boolean>>(5);
         }
-        System.out.println("screenIdFromSchedule: " + screenIdFromSchedule);
-    
-        System.out.println("id: " + movieIdInt);
-        System.out.println("screenId: " + screenIdInt);
-        System.out.println("date: " + date);
-        System.out.println("time: " + time);
-        System.out.println("combined: " + combined);
-
         return seatService.getSeats(screenIdFromSchedule);
     }
 
@@ -78,19 +68,27 @@ public class SeatController {
         LocalDate date = LocalDate.parse(dateString);
         LocalTime time = LocalTime.parse(timeString);
         LocalDateTime combined =  LocalDateTime.of(date, time);
-    
+        Timestamp timestampDate = Timestamp.valueOf(combined);
         String seatId = request.get("seatId").toString();
         int seatIdInt = Integer.parseInt(seatId);
-  
+        
+
+        int screenIdFromSchedule = scheduleService.getScreenId(movieIdInt,screenIdInt,timestampDate);
+        if(screenIdFromSchedule == -1){
+            System.out.println("Screen Id not found");
+            return false;
+        }
+
+
 
 
         
-        ArrayList<ArrayList<Boolean>> seatStructure =   seatService.getSeats(movieIdInt,movieIdInt,combined);
+        ArrayList<ArrayList<Boolean>> seatStructure =   seatService.getSeats(screenIdFromSchedule);
         
         int row = (seatIdInt-1)/10;
         int col = (seatIdInt-1)%10;
         if(seatStructure.get(row).get(col)){
-            seatService.reserveSeat(screenIdInt, seatIdInt);
+            seatService.reserveSeat(screenIdFromSchedule, seatIdInt);
             return true;
         }
         else{
@@ -116,6 +114,14 @@ public class SeatController {
         LocalDate date = LocalDate.parse(dateString);
         LocalTime time = LocalTime.parse(timeString);
         LocalDateTime combined =  LocalDateTime.of(date, time);
+        Timestamp timestampDate = Timestamp.valueOf(combined);
+
+
+        int screenIdFromSchedule = scheduleService.getScreenId(movieIdInt,screenIdInt,timestampDate);
+        if(screenIdFromSchedule == -1){
+            System.out.println("Screen Id not found");
+            return false;
+        }
     
         // System.out.println("id: " + movieIdInt);
         // System.out.println("screenId: " + screenIdInt);
@@ -123,7 +129,7 @@ public class SeatController {
         // System.out.println("time: " + time);
         // System.out.println("combined: " + combined);
 
-        return seatService.isNonPublicSeatsFilled(movieIdInt, screenIdInt, combined);
+        return seatService.isNonPublicSeatsFilled(screenIdFromSchedule);
     }
 
 
