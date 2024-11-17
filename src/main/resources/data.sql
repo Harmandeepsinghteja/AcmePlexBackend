@@ -38,7 +38,7 @@ create table if not exists schedule (
 create table if not exists seat (
     scheduleId int not null,
     seatNumber int not null,
-    isAvaliable tinyint(1) default 1 null,
+    isAvailable tinyint(1) default 1 null,
     primary key (seatNumber, scheduleId),
     constraint seat_schedule_id_fk foreign key (scheduleId) references schedule (id)
 );

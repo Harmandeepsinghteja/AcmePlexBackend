@@ -2,13 +2,10 @@ package __project.server.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import __project.server.model.schedule;
-import java.util.List;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import __project.server.model.  screen;
+import __project.server.model.Screen;
 
 @Repository
-public interface ScreenRepository extends JpaRepository<screen, Integer> {
+public interface ScreenRepository extends JpaRepository<Screen, Integer> {
 
 }

@@ -93,7 +93,7 @@ public class TicketService {
         paymentRepository.save(payment);
 
         // Set seat to unavailable
-        seat.setIsAvaliable(false);
+        seat.setAvailable(false);
 
         // Send email
         String emailBody = "Your ticket number is: " + savedTicket.getId();
@@ -119,7 +119,7 @@ public class TicketService {
         }
 
         Seat seat = seatOptional.get();
-        if (!seat.getIsAvaliable()) {
+        if (!seat.isAvailable()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat is not available");
         }
         return seat;

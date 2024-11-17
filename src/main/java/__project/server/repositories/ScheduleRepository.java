@@ -5,20 +5,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import __project.server.model.schedule;
+
+import __project.server.model.Schedule;
 import java.util.List;
 
 @Repository
-public interface ScheduleRepository extends JpaRepository<schedule, Integer> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     
     
 
     @Query(value = "SELECT * FROM schedule WHERE movieId = ?1", nativeQuery = true)
-    List<schedule> findByMovieId(int id);
+    List<Schedule> findByMovieId(int id);
 
     @Query(value = "SELECT * FROM schedule WHERE LOWER(movieName)=LOWER(?1)", nativeQuery = true)
-    List<schedule> findByMovieName(String movieName);
+    List<Schedule> findByMovieName(String movieName);
 
 
     @Query(value = "SELECT id FROM schedule WHERE movieId = ?1 AND screenId = ?2 AND startTime = ?3", nativeQuery = true)

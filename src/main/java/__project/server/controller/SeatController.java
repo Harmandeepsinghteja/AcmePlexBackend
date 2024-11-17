@@ -7,11 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import __project.server.service.SeatService;
 import org.springframework.web.bind.annotation.GetMapping;
-import java.util.Optional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import __project.server.model.seat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

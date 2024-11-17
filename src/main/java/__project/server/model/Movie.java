@@ -1,12 +1,11 @@
 package __project.server.model;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 import lombok.AllArgsConstructor;
@@ -15,22 +14,25 @@ import lombok.NoArgsConstructor;
 
 
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@IdClass(seatId.class)
-public class seat {
+@Table(name = "movie")
+public class Movie {
 
     @Id
-    @Column(name = "scheduleId")
-    private int scheduleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    @Id
-    @Column(name = "seatNumber")
-    private int seatNumber;
-    
-    @Column(name = "isAvaliable")
-    private int isAvaliable;
+    @Column(name = "movieName")
+    private String movieName;
+
+    @Column(name = "addedDate")
+    private Date addedDate;
+    private String url;
+
 
 }
