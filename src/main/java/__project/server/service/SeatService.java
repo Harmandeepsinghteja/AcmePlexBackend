@@ -2,6 +2,8 @@ package __project.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import __project.server.repositories.SeatRepository;
 import __project.server.model.seat;
@@ -20,7 +22,7 @@ public class SeatService {
 
 
 
-    public ArrayList<ArrayList<Boolean>> getSeats(int id)  {
+    public ArrayList<ArrayList<Boolean>> getSeats(int screenIdFromSchedule) { {
         
 
         ArrayList<ArrayList<Boolean>>  seat_map = new ArrayList<ArrayList<Boolean>>();
@@ -32,7 +34,7 @@ public class SeatService {
             Boolean isAvaliable = false;
             try{
             
-                isAvaliable = seatRepository.findById(id, seatNumber);
+                isAvaliable = seatRepository.findByScheduleId(screenIdFromSchedule,seatNumber);
             System.out.println("seatNumber " + seatNumber + " isAvaliable " + isAvaliable);
 
             }
@@ -54,7 +56,7 @@ public class SeatService {
         // seat seats =  seatRepository.findById(id,);
         // System.out.println("Seats " + seats);
 
-        return seat_map;
+        return seat_map;}
     }
 
 
@@ -67,9 +69,9 @@ public class SeatService {
 
 
 
-    public Boolean isNonPublicSeatsFilled(int movieId, int screenId, String date, String time) {
+    public Boolean isNonPublicSeatsFilled(int movieId, int screenId, LocalDateTime date) {
 
-        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenId);
+        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(movieId, screenId, date);
         int totalSeatsBooked=0;
 
         for(int i=0; i<5; i++){

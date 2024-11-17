@@ -41,12 +41,14 @@ public class ScheduleController {
         
         Map<String, Map<Integer, Set<String>>> groupedSchedules = new TreeMap<>();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
         Map<String, Map<String, List<String>>> result = new TreeMap<>();
+        
 
         for (schedule schedule : schedules) {
+            System.out.println("Schedule " + schedule.getStartTime());
             String date = dateFormat.format(schedule.getStartTime());
             String time = timeFormat.format(schedule.getStartTime());
             String screenName =  scheduleService.getScreenName(schedule.getScreenId()); 

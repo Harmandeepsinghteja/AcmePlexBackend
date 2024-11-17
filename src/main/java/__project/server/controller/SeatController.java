@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import __project.server.model.seat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 import org.springframework.web.bind.annotation.RequestBody;
+import __project.server.service.ScheduleService;
+import java.sql.Timestamp;
 
 @RestController
 @CrossOrigin
@@ -23,6 +29,7 @@ public class SeatController {
 
     @Autowired
     private SeatService seatService;
+    @Autowired ScheduleService scheduleService;
 
 
     @GetMapping("/seats")
@@ -30,28 +37,55 @@ public class SeatController {
             @RequestBody Map<String, String> request
 
     ) {
-        String movieId =  request.get("movieId").toString() ;
+        String movieIdString = request.get("movieId").toString();
         String screenId = request.get("screenId").toString();
-        String date = request.get("date").toString();
-        String time = request.get("time").toString();
-
-        // String response = String.format("Seat info for id: %s, screenId: %s, date: %s, time: %s", movieId, screenId, date, time);
+        String dateString = request.get("date").toString();
+        String timeString = request.get("time").toString();
         int screenIdInt = Integer.parseInt(screenId);
-        return seatService.getSeats(screenIdInt);
+        int movieIdInt = Integer.parseInt(movieIdString);
+        LocalDate date = LocalDate.parse(dateString);
+        LocalTime time = LocalTime.parse(timeString);
+        LocalDateTime combined =  LocalDateTime.of(date, time);
+        System.out.println("combined: " + combined);
+        Timestamp timestampDate = Timestamp.valueOf(combined);
+        System.out.println("Timestamp: " + timestampDate);
+
+        int screenIdFromSchedule = scheduleService.getScreenId(movieIdInt,screenIdInt,timestampDate);
+
+        if(screenIdFromSchedule == -1){
+            System.out.println("Screen Id not found");
+            return new ArrayList<ArrayList<Boolean>>(5);
+        }
+        System.out.println("screenIdFromSchedule: " + screenIdFromSchedule);
+    
+        System.out.println("id: " + movieIdInt);
+        System.out.println("screenId: " + screenIdInt);
+        System.out.println("date: " + date);
+        System.out.println("time: " + time);
+        System.out.println("combined: " + combined);
+
+        return seatService.getSeats(screenIdFromSchedule);
     }
 
     @PostMapping("/reserve")
     public Boolean reserveSeat(@RequestBody Map<String,String> request){
-        String movieId =  request.get("movieId").toString() ;
+        String movieIdString = request.get("movieId").toString();
         String screenId = request.get("screenId").toString();
-        String date = request.get("date").toString();
-        String time = request.get("time").toString();
-        String seatId = request.get("seatId").toString();
+        String dateString = request.get("date").toString();
+        String timeString = request.get("time").toString();
         int screenIdInt = Integer.parseInt(screenId);
+        int movieIdInt = Integer.parseInt(movieIdString);
+        LocalDate date = LocalDate.parse(dateString);
+        LocalTime time = LocalTime.parse(timeString);
+        LocalDateTime combined =  LocalDateTime.of(date, time);
+    
+        String seatId = request.get("seatId").toString();
         int seatIdInt = Integer.parseInt(seatId);
+  
+
 
         
-        ArrayList<ArrayList<Boolean>> seatStructure =   seatService.getSeats(screenIdInt);
+        ArrayList<ArrayList<Boolean>> seatStructure =   seatService.getSeats(movieIdInt,movieIdInt,combined);
         
         int row = (seatIdInt-1)/10;
         int col = (seatIdInt-1)%10;
@@ -72,14 +106,24 @@ public class SeatController {
 
     @GetMapping("/is-non-public-seats-filled")
     public Boolean getNonPublicSeatsFilled(@RequestBody Map<String, String> request) {
-        String movieId =  request.get("movieId").toString() ;
+ 
+        String movieIdString = request.get("movieId").toString();
         String screenId = request.get("screenId").toString();
-        String date = request.get("date").toString();
-        String time = request.get("time").toString();
+        String dateString = request.get("date").toString();
+        String timeString = request.get("time").toString();
         int screenIdInt = Integer.parseInt(screenId);
-        int movieIdInt = Integer.parseInt(movieId);
+        int movieIdInt = Integer.parseInt(movieIdString);
+        LocalDate date = LocalDate.parse(dateString);
+        LocalTime time = LocalTime.parse(timeString);
+        LocalDateTime combined =  LocalDateTime.of(date, time);
+    
+        // System.out.println("id: " + movieIdInt);
+        // System.out.println("screenId: " + screenIdInt);
+        // System.out.println("date: " + date);
+        // System.out.println("time: " + time);
+        // System.out.println("combined: " + combined);
 
-        return seatService.isNonPublicSeatsFilled(movieIdInt, screenIdInt, date, time);
+        return seatService.isNonPublicSeatsFilled(movieIdInt, screenIdInt, combined);
     }
 
 
