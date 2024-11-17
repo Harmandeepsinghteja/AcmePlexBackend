@@ -38,7 +38,7 @@ public class MovieController {
         List<Map<String, Object>> response = new ArrayList<>();
         for (movie movie : movies) {
             Map<String, Object> item = new HashMap<>();
-            item.put("id", movie.getId());
+            item.put("movieId", movie.getId());
             item.put("movieName", movie.getMovieName());
             item.put("addedDate", movie.getAddedDate());
             item.put("url", movie.getUrl());
@@ -58,7 +58,7 @@ public class MovieController {
 
 
     @GetMapping("/is-movie-public")
-    public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, Integer> request) {
+    public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, String> request) {
         String movieIdString = request.get("movieId").toString();
         int movieIdInt = Integer.parseInt(movieIdString);
 
@@ -79,7 +79,7 @@ public class MovieController {
         List<Map<String, Object>> response = new ArrayList<>();
         for (movie movie : movies) {
             Map<String, Object> item = new HashMap<>();
-            item.put("id", movie.getId());
+            item.put("movieId", movie.getId());
             item.put("movieName", movie.getMovieName());
             item.put("addedDate", movie.getAddedDate());
             item.put("url", movie.getUrl());

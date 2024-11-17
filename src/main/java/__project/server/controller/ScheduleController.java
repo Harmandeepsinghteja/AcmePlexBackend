@@ -34,10 +34,12 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @GetMapping("/showtimes")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request) {
 
-        int movieId = (int) requestBody.get("movieId");
-        List<schedule> schedules = scheduleService.getShowTimes(movieId);
+        String movieIdString = request.get("movieId").toString();
+        int movieIdInt = Integer.parseInt(movieIdString);
+
+        List<schedule> schedules = scheduleService.getShowTimes(movieIdInt);
         
         Map<String, Map<Integer, Set<String>>> groupedSchedules = new TreeMap<>();
 
