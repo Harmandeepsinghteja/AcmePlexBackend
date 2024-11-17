@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import __project.server.model.screen;
 
 @Repository
-public interface screenRepository extends JpaRepository<screen, Integer> {
+public interface ScreenRepository extends JpaRepository<screen, Integer> {
 
 }

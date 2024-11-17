@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import __project.server.model.movie;
-import __project.server.service.movieService;
+import __project.server.service.MovieService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/")
 @RestController
-public class movieController {
+public class MovieController {
 
     @Autowired
-    private movieService movieService;
+    private MovieService movieService;
 
     @GetMapping("/public-movies")  
     public ResponseEntity<List<Map<String, Object>>> getMovies() {

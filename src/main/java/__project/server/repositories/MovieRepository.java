@@ -7,7 +7,7 @@ import java.util.List;
 import __project.server.model.movie;
 
 @Repository
-public interface movieRepository extends JpaRepository<movie, Integer> {
+public interface MovieRepository extends JpaRepository<movie, Integer> {
 
 
     @Query(value = "SELECT * FROM movie WHERE addedDate < DATE_SUB(NOW(), INTERVAL 1 WEEK)", nativeQuery = true)
