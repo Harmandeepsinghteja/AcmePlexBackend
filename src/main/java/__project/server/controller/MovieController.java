@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import __project.server.model.movie;
-import __project.server.service.movieService;
+import __project.server.service.MovieService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/")
 @RestController
-public class movieController {
+public class MovieController {
 
     @Autowired
-    private movieService movieService;
+    private MovieService movieService;
 
     @GetMapping("/public-movies")  
     public ResponseEntity<List<Map<String, Object>>> getMovies() {
@@ -45,16 +45,16 @@ public class movieController {
         return ResponseEntity.ok(response);
 }
 
-    @GetMapping("/is-movie-public/{id}")
-    public boolean isMoviePublic(@PathVariable("id") int id) {
-        boolean isPublic = movieService.isMoviePublic(id);
+    // @GetMapping("/is-movie-public")
+    // public boolean isMoviePublic(@PathVariable("id") int id) {
+    //     boolean isPublic = movieService.isMoviePublic(id);
 
-        return isPublic;
-    }
+    //     return isPublic;
+    // }
     
 
 
-    @GetMapping(value = "/is-movie-public")
+    @GetMapping("/is-movie-public")
     public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, Integer> request) {
     Integer id = request.get("movieId");
     System.out.println("id: " + id);

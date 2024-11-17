@@ -8,7 +8,7 @@ import __project.server.model.schedule;
 import java.util.List;
 
 @Repository
-public interface scheduleRepository extends JpaRepository<schedule, Integer> {
+public interface ScheduleRepository extends JpaRepository<schedule, Integer> {
     
     
 

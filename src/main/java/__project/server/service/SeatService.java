@@ -3,22 +3,26 @@ package __project.server.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
-import __project.server.repositories.seatRepository;
+import __project.server.repositories.SeatRepository;
 import __project.server.model.seat;
 import java.util.Optional;
 
 @Service
-public class seatService {
+public class SeatService {
 
     @Autowired
-    private seatRepository seatRepository;
+    private SeatRepository seatRepository;
+
+    private final int row = 5;
+    private final int col = 10;
+    private final int totalPercentageSeatsAllowedForRegisteredUser = 10;
+    private final int capacity = 50;
 
 
 
     public ArrayList<ArrayList<Boolean>> getSeats(int id)  {
         
-        int row = 5;
-        int col =10;
+
         ArrayList<ArrayList<Boolean>>  seat_map = new ArrayList<ArrayList<Boolean>>();
         for(int i=0; i<row; i++){
             ArrayList<Boolean> row_list = new ArrayList<Boolean>();
@@ -59,4 +63,38 @@ public class seatService {
         System.out.println("Reserving seat " + seatId + " for screen " + screenId);
         seatRepository.reserveSeat(screenId, seatId);
     }
+
+
+
+
+    public Boolean isNonPublicSeatsFilled(int movieId, int screenId, String date, String time) {
+
+        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenId);
+        int totalSeatsBooked=0;
+
+        for(int i=0; i<5; i++){
+            for(int j=0; j<10; j++){
+                if(!seatStructure.get(i).get(j)){
+                    totalSeatsBooked++;
+                }
+            }
+        }
+
+        if(totalSeatsBooked >= (totalPercentageSeatsAllowedForRegisteredUser*capacity)/100){
+            return true;
+        }
+
+        return false;
+        
+    }
+
+
+
+
+
+
+
+
+
+
 }

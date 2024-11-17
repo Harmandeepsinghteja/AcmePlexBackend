@@ -1,20 +1,20 @@
 package __project.server.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import __project.server.repositories.scheduleRepository;
+import __project.server.repositories.ScheduleRepository;
 import java.util.List;
 import __project.server.model.schedule;
-import __project.server.service.screenService;
+import __project.server.service.ScreenService;
 
 @Service
-public class scheduleService {
+public class ScheduleService {
 
     @Autowired
-    private scheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
     @Autowired
-    private screenService screenService;
+    private ScreenService screenService;
     @Autowired
-    private movieService movieService;
+    private MovieService movieService;
 
 
     public List<schedule> getShowTimes(int id) {
