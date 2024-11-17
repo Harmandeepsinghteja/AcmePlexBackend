@@ -19,32 +19,38 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Collections;
 import org.springframework.web.bind.annotation.PathVariable;
-import __project.server.service.scheduleService;
+import __project.server.service.ScheduleService;
 import __project.server.model.schedule;
 import java.util.Date;
 import java.util.Set;
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/")
 @RestController
 @CrossOrigin
-public class scheduleController {
+public class ScheduleController {
 
     @Autowired
-    private scheduleService scheduleService;
+    private ScheduleService scheduleService;
 
-    @GetMapping("/showtimes/{movieId}")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@PathVariable int movieId) {
-        List<schedule> schedules = scheduleService.getShowTimes(movieId);
+    @GetMapping("/showtimes")
+    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request) {
+
+        String movieIdString = request.get("movieId").toString();
+        int movieIdInt = Integer.parseInt(movieIdString);
+
+        List<schedule> schedules = scheduleService.getShowTimes(movieIdInt);
         
         Map<String, Map<Integer, Set<String>>> groupedSchedules = new TreeMap<>();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
         Map<String, Map<String, List<String>>> result = new TreeMap<>();
+        
 
         for (schedule schedule : schedules) {
+            System.out.println("Schedule " + schedule.getStartTime());
             String date = dateFormat.format(schedule.getStartTime());
             String time = timeFormat.format(schedule.getStartTime());
             String screenName =  scheduleService.getScreenName(schedule.getScreenId()); 

@@ -2,7 +2,9 @@ package __project.server.model;
 import java.io.Serializable;
 
 
-public class SeatId implements Serializable {
+public class seatId implements Serializable {
+
+    
     private Integer scheduleId;
     private Integer seatNumber;
 

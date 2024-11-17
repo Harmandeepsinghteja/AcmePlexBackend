@@ -12,6 +12,7 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 
@@ -23,11 +24,19 @@ public class screen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-    @Column(name = "screen_name")
+    @Column(name = "screenName")
     private String screenName;
+
+
+    @Column(name = "length")
     private int length;
-    private int wide;
+
+    @Column(name = "width")
+    private int width;
+
+    @Column(name = "capacity")
     private int capacity;   
     
 

@@ -22,14 +22,16 @@ public class schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")  
     private int id;
 
-    @Column(name = "movie_id")  
+    @Column(name = "movieId")  
     private int movieId;
-    @Column(name = "screen_id")
+    @Column(name = "screenId")
     private int screenId;
-    @Column(name = "start_time")
+    @Column(name = "startTime")
     private Date startTime;
+    @Column(name = "price")  
     private double price;   
 
 
