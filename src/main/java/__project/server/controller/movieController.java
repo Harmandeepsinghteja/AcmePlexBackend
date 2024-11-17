@@ -45,16 +45,16 @@ public class movieController {
         return ResponseEntity.ok(response);
 }
 
-    @GetMapping("/is-movie-public/{id}")
-    public boolean isMoviePublic(@PathVariable("id") int id) {
-        boolean isPublic = movieService.isMoviePublic(id);
+    // @GetMapping("/is-movie-public")
+    // public boolean isMoviePublic(@PathVariable("id") int id) {
+    //     boolean isPublic = movieService.isMoviePublic(id);
 
-        return isPublic;
-    }
+    //     return isPublic;
+    // }
     
 
 
-    @GetMapping(value = "/is-movie-public")
+    @GetMapping("/is-movie-public")
     public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, Integer> request) {
     Integer id = request.get("movieId");
     System.out.println("id: " + id);
