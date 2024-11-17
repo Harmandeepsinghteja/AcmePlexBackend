@@ -1,11 +1,10 @@
 package __project.server.repositories;
 
+import __project.server.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.stereotype.Repository;
-import __project.server.model.Screen;
 
 @Repository
-public interface ScreenRepository extends JpaRepository<Screen, Integer> {
+public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
 }

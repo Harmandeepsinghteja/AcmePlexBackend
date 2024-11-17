@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import __project.server.repositories.MovieRepository;
 
-import __project.server.model.movie;
+import __project.server.model.Movie;
 import java.util.List;
 
 
@@ -14,13 +14,13 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public List<movie> getPublicMovies() {
+    public List<Movie> getPublicMovies() {
         
         return movieRepository.findMovieAddedGreaterThanOneWeek();
     }
 
     public boolean isMoviePublic(int id) {
-        List<movie> movies= movieRepository.isMovieAddedGreaterThanOneWeek(id);
+        List<Movie> movies= movieRepository.isMovieAddedGreaterThanOneWeek(id);
         return movies.size() > 0;
     }
 
@@ -29,7 +29,7 @@ public class MovieService {
         System.out.println("id" + id);
         return id;}
 
-    public List<movie> getNonPublicMovies() {
+    public List<Movie> getNonPublicMovies() {
         
         return movieRepository.findMovieAddedLessThanOneWeek();
     }
