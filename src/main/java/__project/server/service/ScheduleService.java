@@ -5,7 +5,9 @@ import __project.server.repositories.ScheduleRepository;
 import java.util.List;
 import __project.server.model.schedule;
 import __project.server.service.ScreenService;
-
+import __project.server.service.MovieService;
+import java.time.LocalDateTime;
+import java.sql.Timestamp;
 @Service
 public class ScheduleService {
 
@@ -29,6 +31,17 @@ public class ScheduleService {
         // System.out.println("movieName" + movieName);
         int id = movieService.getMovieId(movieName);
         return getShowTimes(id);
+    }
+
+    public Integer getScreenId(int movieId,int screenId, Timestamp time) {
+        try{
+            return scheduleRepository.findByMovieScreenDate(movieId,screenId, time);
+        }
+        catch(Exception e){
+            System.out.println("Error " + e);
+            return -1;
+        }
+       
     }
 
 

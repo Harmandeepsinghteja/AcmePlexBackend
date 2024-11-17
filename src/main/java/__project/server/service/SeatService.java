@@ -2,6 +2,8 @@ package __project.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import __project.server.repositories.SeatRepository;
 import __project.server.model.seat;
@@ -20,7 +22,7 @@ public class SeatService {
 
 
 
-    public ArrayList<ArrayList<Boolean>> getSeats(int id)  {
+    public ArrayList<ArrayList<Boolean>> getSeats(int screenIdFromSchedule) { {
         
 
         ArrayList<ArrayList<Boolean>>  seat_map = new ArrayList<ArrayList<Boolean>>();
@@ -32,7 +34,7 @@ public class SeatService {
             Boolean isAvaliable = false;
             try{
             
-                isAvaliable = seatRepository.findById(id, seatNumber);
+                isAvaliable = seatRepository.findByScheduleId(screenIdFromSchedule,seatNumber);
             System.out.println("seatNumber " + seatNumber + " isAvaliable " + isAvaliable);
 
             }
@@ -54,22 +56,22 @@ public class SeatService {
         // seat seats =  seatRepository.findById(id,);
         // System.out.println("Seats " + seats);
 
-        return seat_map;
+        return seat_map;}
     }
 
 
 
-    public void reserveSeat(int screenId, int seatId) {
-        System.out.println("Reserving seat " + seatId + " for screen " + screenId);
-        seatRepository.reserveSeat(screenId, seatId);
+    public void reserveSeat(int scheduleId, int seatId) {
+        System.out.println("Reserving seat " + seatId + " for schedule " + scheduleId);
+        seatRepository.reserveSeat(scheduleId, seatId);
     }
 
 
 
 
-    public Boolean isNonPublicSeatsFilled(int movieId, int screenId, String date, String time) {
+    public Boolean isNonPublicSeatsFilled(int screenIdFromSchedule) {
 
-        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenId);
+        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenIdFromSchedule);
         int totalSeatsBooked=0;
 
         for(int i=0; i<5; i++){

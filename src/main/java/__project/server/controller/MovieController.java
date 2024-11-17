@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import __project.server.model.movie;
 import __project.server.service.MovieService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +38,7 @@ public class MovieController {
         List<Map<String, Object>> response = new ArrayList<>();
         for (movie movie : movies) {
             Map<String, Object> item = new HashMap<>();
-            item.put("id", movie.getId());
+            item.put("movieId", movie.getId());
             item.put("movieName", movie.getMovieName());
             item.put("addedDate", movie.getAddedDate());
             item.put("url", movie.getUrl());
@@ -55,13 +58,18 @@ public class MovieController {
 
 
     @GetMapping("/is-movie-public")
-    public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, Integer> request) {
-    Integer id = request.get("movieId");
-    System.out.println("id: " + id);
-    if (id == null) {
+    public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, String> request) {
+        String movieIdString = request.get("movieId").toString();
+        int movieIdInt = Integer.parseInt(movieIdString);
+
+   
+
+
+    System.out.println("id: " + movieIdInt);
+    if (movieIdString == null) {
         return ResponseEntity.badRequest().body(false);
     }
-    boolean isPublic = movieService.isMoviePublic(id);
+    boolean isPublic = movieService.isMoviePublic(movieIdInt);
     return ResponseEntity.ok(isPublic);
 }
 
@@ -71,7 +79,7 @@ public class MovieController {
         List<Map<String, Object>> response = new ArrayList<>();
         for (movie movie : movies) {
             Map<String, Object> item = new HashMap<>();
-            item.put("id", movie.getId());
+            item.put("movieId", movie.getId());
             item.put("movieName", movie.getMovieName());
             item.put("addedDate", movie.getAddedDate());
             item.put("url", movie.getUrl());
