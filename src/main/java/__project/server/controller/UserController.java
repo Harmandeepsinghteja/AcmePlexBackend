@@ -50,9 +50,4 @@ public class UserController {
         userService.updatePaymentMethod(userId, user.getPaymentMethod(), user.getCardNumber());
     }
 
- /*
-
-    Patch/payment-method
-    input: token
-    return: status only*/
 }

@@ -25,7 +25,6 @@ public class UserService {
     }
 
     public String addUser(User newUser) {
-        System.out.println(newUser.getId());
         if(userRepository.existsByEmail(newUser.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email taken");
         }
