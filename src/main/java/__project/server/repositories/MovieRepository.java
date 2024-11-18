@@ -1,10 +1,11 @@
 package __project.server.repositories;
 
+import __project.server.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
-import __project.server.model.Movie;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {

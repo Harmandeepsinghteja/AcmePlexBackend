@@ -1,26 +1,23 @@
 package __project.server.controller;
 
 
+import __project.server.model.Schedule;
+import __project.server.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.Collections;
-
-import __project.server.service.ScheduleService;
-import __project.server.model.Schedule;
-
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.TreeMap;
 
 @RequestMapping("/")
 @RestController

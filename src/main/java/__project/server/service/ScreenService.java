@@ -1,10 +1,10 @@
 package __project.server.service;
 
+import __project.server.model.Screen;
+import __project.server.repositories.ScreenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import __project.server.repositories.ScreenRepository;
-import __project.server.model.Screen;
 import java.util.Optional;
 
 
