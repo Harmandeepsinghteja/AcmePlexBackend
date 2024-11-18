@@ -2,7 +2,6 @@ package __project.server.model;
 
 import __project.server.utils.MembershipStatus;
 import __project.server.utils.PaymentMethod;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

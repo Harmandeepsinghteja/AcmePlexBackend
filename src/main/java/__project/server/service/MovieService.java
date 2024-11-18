@@ -1,10 +1,10 @@
 package __project.server.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import __project.server.repositories.MovieRepository;
-
 import __project.server.model.Movie;
+import __project.server.repositories.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 

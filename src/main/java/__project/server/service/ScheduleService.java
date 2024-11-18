@@ -1,11 +1,12 @@
 package __project.server.service;
+
+import __project.server.model.Schedule;
+import __project.server.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import __project.server.repositories.ScheduleRepository;
-import java.util.List;
-import __project.server.model.Schedule;
 
 import java.sql.Timestamp;
+import java.util.List;
 @Service
 public class ScheduleService {
 

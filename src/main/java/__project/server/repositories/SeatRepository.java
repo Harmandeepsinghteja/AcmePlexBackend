@@ -1,12 +1,11 @@
 package __project.server.repositories;
 
+import __project.server.model.Seat;
 import __project.server.model.SeatId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import __project.server.model.Seat;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
