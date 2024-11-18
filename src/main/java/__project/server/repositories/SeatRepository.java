@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SeatRepository extends JpaRepository<Seat, SeatId>{
 
 
-    @Query(value = "SELECT isAvaliable FROM seat WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
+    @Query(value = "SELECT isAvailable FROM seat WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
     public Boolean findByScheduleId(int id, int seat_number);
 
  
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE seat SET isAvaliable = 0 WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
+    @Query(value = "UPDATE seat SET isAvailable = 0 WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
     public void reserveSeat(int scheduleId, int seatId);
 
 
