@@ -2,27 +2,20 @@ package __project.server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import __project.server.model.movie;
+import __project.server.model.Movie;
 import __project.server.service.MovieService;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.Map;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/")
@@ -34,9 +27,9 @@ public class MovieController {
 
     @GetMapping("/public-movies")  
     public ResponseEntity<List<Map<String, Object>>> getMovies() {
-        List<movie> movies = movieService.getPublicMovies();
+        List<Movie> movies = movieService.getPublicMovies();
         List<Map<String, Object>> response = new ArrayList<>();
-        for (movie movie : movies) {
+        for (Movie movie : movies) {
             Map<String, Object> item = new HashMap<>();
             item.put("movieId", movie.getId());
             item.put("movieName", movie.getMovieName());
@@ -75,9 +68,9 @@ public class MovieController {
 
         @GetMapping("/non-public-movies")  
         public ResponseEntity<List<Map<String, Object>>> getNonPublicMovies() {
-        List<movie> movies = movieService.getNonPublicMovies();
+        List<Movie> movies = movieService.getNonPublicMovies();
         List<Map<String, Object>> response = new ArrayList<>();
-        for (movie movie : movies) {
+        for (Movie movie : movies) {
             Map<String, Object> item = new HashMap<>();
             item.put("movieId", movie.getId());
             item.put("movieName", movie.getMovieName());

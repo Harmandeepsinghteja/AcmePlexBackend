@@ -3,10 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import __project.server.repositories.ScheduleRepository;
 import java.util.List;
-import __project.server.model.schedule;
-import __project.server.service.ScreenService;
-import __project.server.service.MovieService;
-import java.time.LocalDateTime;
+import __project.server.model.Schedule;
+
 import java.sql.Timestamp;
 @Service
 public class ScheduleService {
@@ -19,7 +17,7 @@ public class ScheduleService {
     private MovieService movieService;
 
 
-    public List<schedule> getShowTimes(int id) {
+    public List<Schedule> getShowTimes(int id) {
         return scheduleRepository.findByMovieId(id);
     }
 
@@ -27,7 +25,7 @@ public class ScheduleService {
         return screenService.getScreenName(id);
     }
 
-    public List<schedule> getShowTimesByName(String movieName) {
+    public List<Schedule> getShowTimesByName(String movieName) {
         // System.out.println("movieName" + movieName);
         int id = movieService.getMovieId(movieName);
         return getShowTimes(id);

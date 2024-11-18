@@ -1,16 +1,16 @@
 package __project.server.repositories;
 
+import __project.server.model.SeatId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import __project.server.model.seat;
+import __project.server.model.Seat;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
 
 @Repository
-public interface SeatRepository extends JpaRepository<seat, Integer>{
+public interface SeatRepository extends JpaRepository<Seat, SeatId>{
 
 
     @Query(value = "SELECT isAvaliable FROM seat WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)

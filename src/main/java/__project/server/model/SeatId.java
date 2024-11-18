@@ -1,8 +1,13 @@
 package __project.server.model;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 
-public class seatId implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SeatId implements Serializable {
 
     
     private Integer scheduleId;
