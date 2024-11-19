@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import __project.server.service.SeatService;
+import __project.server.utils.JwtUtil;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -17,6 +19,8 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.RequestBody;
 import __project.server.service.ScheduleService;
 import java.sql.Timestamp;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 
 @RestController
 @CrossOrigin
@@ -30,9 +34,11 @@ public class SeatController {
 
     @GetMapping("/seats")
     public ArrayList<ArrayList<Boolean>> getSeats(
-            @RequestBody Map<String, String> request
+            @RequestBody Map<String, String> request,
+            @RequestHeader String token
 
     ) {
+        int userId = JwtUtil.verifyJwt(token);
         String movieIdString = request.get("movieId").toString();
         String screenId = request.get("screenId").toString();
         String dateString = request.get("date").toString();
@@ -54,7 +60,9 @@ public class SeatController {
     }
 
     @PostMapping("/reserve")
-    public Boolean reserveSeat(@RequestBody Map<String,String> request){
+    public Boolean reserveSeat(@RequestBody Map<String,String> request,
+                               @RequestHeader String token) {   
+        int userId = JwtUtil.verifyJwt(token);
         String movieIdString = request.get("movieId").toString();
         String screenId = request.get("screenId").toString();
         String dateString = request.get("date").toString();
@@ -99,8 +107,9 @@ public class SeatController {
 
 
     @GetMapping("/is-non-public-seats-filled")
-    public Boolean getNonPublicSeatsFilled(@RequestBody Map<String, String> request) {
- 
+    public Boolean getNonPublicSeatsFilled(@RequestBody Map<String, String> request,
+                                            @RequestHeader String token) {
+        int userId = JwtUtil.verifyJwt(token);
         String movieIdString = request.get("movieId").toString();
         String screenId = request.get("screenId").toString();
         String dateString = request.get("date").toString();

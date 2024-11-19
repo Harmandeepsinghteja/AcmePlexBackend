@@ -17,10 +17,12 @@ import java.util.TreeMap;
 import java.util.Collections;
 
 import __project.server.service.ScheduleService;
+import __project.server.utils.JwtUtil;
 import __project.server.model.Schedule;
 
 import java.util.Set;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RequestMapping("/")
 @RestController
@@ -31,8 +33,10 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @GetMapping("/showtimes")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request) {
-
+    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request,
+                                                                                @RequestHeader String token) {
+                                                                                    
+        int userId = JwtUtil.verifyJwt(token);
         String movieIdString = request.get("movieId").toString();
         int movieIdInt = Integer.parseInt(movieIdString);
 
