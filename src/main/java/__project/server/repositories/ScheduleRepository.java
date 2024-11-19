@@ -1,12 +1,11 @@
 package __project.server.repositories;
 
-import org.springframework.stereotype.Repository;
+import __project.server.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-
-import __project.server.model.Schedule;
 import java.util.List;
 
 @Repository

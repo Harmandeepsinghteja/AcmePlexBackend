@@ -23,9 +23,3 @@ public interface CreditRefundRepository extends JpaRepository<CreditRefund, Inte
     public List<CreditRefund> findUnexpiredCreditsByUserId(int userId);
 
 }
-/*
-SELECT credit_refund.ticketId, credit_refund.refundAmount, credit_refund.expiryDate
-            FROM credit_refund
-JOIN ticket on credit_refund.ticketId = ticket.id
-WHERE ticket.userId = ?1 AND credit_refund.expiryDate >= NOW() AND credit_refund.refundAmount > 0
-ORDER BY credit_refund.expiryDate;*/

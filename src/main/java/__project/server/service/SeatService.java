@@ -1,10 +1,10 @@
 package __project.server.service;
 
+import __project.server.repositories.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import __project.server.repositories.SeatRepository;
 
 @Service
 public class SeatService {

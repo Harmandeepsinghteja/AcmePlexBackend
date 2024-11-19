@@ -1,14 +1,18 @@
 package __project.server.controller;
 
-import __project.server.model.CreditRefund;
+import __project.server.Entity.ReservationDetails;
 import __project.server.model.Ticket;
 import __project.server.service.TicketService;
 import __project.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,27 +27,24 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
+    @GetMapping("/upcoming-reserved-tickets")
+    public List<ReservationDetails> getUpcomingReservedTickets(@RequestHeader String token) {
+        int userId = JwtUtil.verifyJwt(token);
+        return ticketService.getUpcomingReservedTickets(userId);
+    }
+
     @PostMapping("/ticket")
+    @ResponseStatus(HttpStatus.CREATED)
     public void createTicket(@RequestHeader String token, @RequestBody Ticket ticket) {
         int userId = JwtUtil.verifyJwt(token);
         ticket.setUserId(userId);
         ticketService.bookTicket(ticket);
     }
 
-    /*GET/upcoming-reserved-tickets
-    input: token
-    [{ticketNumber, MoveTitle, Screen, Seat, PlayTime}, ...]*/
-
-    /*@GetMapping("/upcoming-reserved-tickets")
-    public void getUpcomingReservedTickets(@RequestHeader String token) {
+    @PatchMapping("/cancel-ticket/{ticketId}")
+    public void cancelTicket(@RequestHeader String token, @PathVariable int ticketId) {
         int userId = JwtUtil.verifyJwt(token);
-        ticket.setUserId(userId);
-
-    }*/
-
-    @GetMapping("/test")
-    public void test() {
-        ticketService.sendEmail("basecaper2@gmail.com", "Sent from spring boot", "This email was sent from spring boot");
+        ticketService.cancelTicket(ticketId, userId);
     }
 
 }

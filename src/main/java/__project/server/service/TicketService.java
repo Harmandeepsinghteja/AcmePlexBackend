@@ -1,21 +1,20 @@
 package __project.server.service;
 
+import __project.server.Entity.ReservationDetails;
 import __project.server.model.CreditRefund;
 import __project.server.model.Payment;
 import __project.server.model.Seat;
 import __project.server.model.SeatId;
 import __project.server.model.Ticket;
 import __project.server.model.User;
-import __project.server.model.Schedule;
 import __project.server.repositories.CreditRefundRepository;
 import __project.server.repositories.PaymentRepository;
 import __project.server.repositories.ScheduleRepository;
 import __project.server.repositories.SeatRepository;
 import __project.server.repositories.TicketRepository;
 import __project.server.repositories.UserRepository;
+import __project.server.utils.MembershipStatus;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.Async;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,9 +23,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TicketService {
+
+    private static final int CANCELLATION_DEADLINE_IN_HOURS = 72;
+    private static double ADMIN_FEE_PERCENTAGE = 0.15;
 
     private final TicketRepository ticketRepository;
     private final PaymentRepository paymentRepository;
@@ -89,7 +92,6 @@ public class TicketService {
                 user.getCardNumber(),
                 creditSpent,
                 moneySpent);
-
         paymentRepository.save(payment);
 
         // Set seat to unavailable
@@ -98,8 +100,68 @@ public class TicketService {
         // Send email
         String emailBody = "Your ticket number is: " + savedTicket.getId();
         emailService.sendEmail(user.getEmail(), "Ticket Reservation", emailBody);
+    }
 
+    public List<ReservationDetails> getUpcomingReservedTickets(int userId) {
+        return ticketRepository.findUpcomingReservedTickets(userId);
+    }
 
+    // With transaction, you can just fetch a something from the database, and update its properties using the class
+    // setters, and those properties will automatically be updated in the database as well, without having to use the
+    // .save() method.
+    @Transactional
+    public void cancelTicket(int ticketId, int userId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "ticket with id " + ticketId + " not found"
+        ));
+
+        if (userId != ticket.getUserId()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "ticket with id " + ticketId + " does not belong to this user"
+            );
+        }
+
+        // Check if cancellation deadline has passed
+        if (passedCancellationDeadline(ticket)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Cancellation deadline has passed"
+            );
+        }
+
+        // Cancel ticket
+        ticket.setCancelled(true);
+        ticket.setCancellationDate(new Date());
+
+        // Make seat available
+        Seat seat = seatRepository.findById(new SeatId(ticket.getScheduleId(), ticket.getSeatNumber())).get();
+        seat.setAvailable(true);
+
+        // Give credits
+        double refundAmount = 0;
+        double price = scheduleRepository.findById(ticket.getScheduleId())
+                .get()
+                .getPrice();
+        MembershipStatus membershipStatus = userRepository.findById(userId)
+                .get()
+                .getMembershipStatus();
+        if (membershipStatus.equals(MembershipStatus.NON_PREMIUM)) {
+            double administrationFee = price * ADMIN_FEE_PERCENTAGE;
+            refundAmount = price - administrationFee;
+            refundAmount = Math.round(refundAmount * 100.0) / 100.0;
+        }
+        CreditRefund creditRefund = new CreditRefund(ticketId, refundAmount, new Date());
+        creditRefundRepository.save(creditRefund);
+    }
+
+    private boolean passedCancellationDeadline(Ticket ticket) {
+        // Get showtime
+        Date startTime = scheduleRepository.findById(ticket.getScheduleId())
+                .get()
+                .getStartTime();
+
+        long diffInMillseconds = Math.abs(new Date().getTime() - startTime.getTime());
+        long diff = TimeUnit.HOURS.convert(diffInMillseconds, TimeUnit.MILLISECONDS);
+        return diff < 72;
     }
 
     private Seat validateTicketDetails(Ticket ticket) {
@@ -123,10 +185,6 @@ public class TicketService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat is not available");
         }
         return seat;
-    }
-
-    public void sendEmail(String to, String subject, String body) {
-        emailService.sendEmail(to, subject, body);
     }
 
 }
