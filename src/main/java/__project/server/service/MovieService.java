@@ -34,5 +34,10 @@ public class MovieService {
         return movieRepository.findMovieAddedLessThanOneWeek();
     }
 
+    public String getMovieName(int id) {
+        String name = movieRepository.findMovieNamebyId(id);
+        return name;
+    }
+
 
 }

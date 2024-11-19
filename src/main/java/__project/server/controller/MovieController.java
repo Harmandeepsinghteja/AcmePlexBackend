@@ -55,17 +55,13 @@ public class MovieController {
     public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, String> request) {
         String movieIdString = request.get("movieId").toString();
         int movieIdInt = Integer.parseInt(movieIdString);
-
-   
-
-
-    System.out.println("id: " + movieIdInt);
-    if (movieIdString == null) {
-        return ResponseEntity.badRequest().body(false);
+        System.out.println("id: " + movieIdInt);
+        if (movieIdString == null) {
+            return ResponseEntity.badRequest().body(false);
+        }
+        boolean isPublic = movieService.isMoviePublic(movieIdInt);
+        return ResponseEntity.ok(isPublic);
     }
-    boolean isPublic = movieService.isMoviePublic(movieIdInt);
-    return ResponseEntity.ok(isPublic);
-}
 
         @GetMapping("/non-public-movies") 
         public ResponseEntity<List<Map<String, Object>>> getNonPublicMovies(@RequestHeader String token) {
@@ -84,7 +80,21 @@ public class MovieController {
 
         return ResponseEntity.ok(response);
 }
+        
+        @GetMapping("/movie") 
+        public ResponseEntity<Map<String, Object>> getMovie(@RequestBody Map<String, String> request) {
 
+        String movieIdString = request.get("movieId").toString();
+        int movieIdInt = Integer.parseInt(movieIdString);
+        boolean isPublic = movieService.isMoviePublic(movieIdInt);
 
+        // Get Movie Name
+        String movieName = movieService.getMovieName(movieIdInt);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("movieName", movieName);
+        response.put("isMoviePublic", isPublic);
+        return ResponseEntity.ok(response);
+    }
 
 }
