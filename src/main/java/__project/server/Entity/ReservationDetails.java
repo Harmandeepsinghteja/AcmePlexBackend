@@ -12,4 +12,5 @@ public interface ReservationDetails {
     String getMovieName();
     Integer getScreenNumber();
     Date getStartTime();
+    Integer getSeatNumber();
 }
