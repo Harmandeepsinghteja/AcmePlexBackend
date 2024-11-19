@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+
+import __project.server.utils.JwtUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 @RequestMapping("/")
 @RestController
@@ -62,8 +67,10 @@ public class MovieController {
     return ResponseEntity.ok(isPublic);
 }
 
-        @GetMapping("/non-public-movies")  
-        public ResponseEntity<List<Map<String, Object>>> getNonPublicMovies() {
+        @GetMapping("/non-public-movies") 
+        public ResponseEntity<List<Map<String, Object>>> getNonPublicMovies(@RequestHeader String token) {
+        int userId = JwtUtil.verifyJwt(token);
+        
         List<Movie> movies = movieService.getNonPublicMovies();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Movie movie : movies) {

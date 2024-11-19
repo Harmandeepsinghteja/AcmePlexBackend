@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import __project.server.utils.JwtUtil;
+
+
 
 @RequestMapping("/")
 @RestController
@@ -28,8 +32,10 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @GetMapping("/showtimes")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request) {
-
+    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request,
+                                                                                @RequestHeader String token) {
+                                                                                    
+        int userId = JwtUtil.verifyJwt(token);
         String movieIdString = request.get("movieId").toString();
         int movieIdInt = Integer.parseInt(movieIdString);
 
