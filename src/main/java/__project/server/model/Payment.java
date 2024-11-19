@@ -3,6 +3,8 @@ package __project.server.model;
 import __project.server.utils.PaymentMethod;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,6 +26,7 @@ public class Payment {
     @Column(name = "paymentTime")
     private Date paymentTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "paymentMethod")
     private PaymentMethod paymentMethod;
 
