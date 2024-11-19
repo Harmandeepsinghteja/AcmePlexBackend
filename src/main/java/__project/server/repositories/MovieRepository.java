@@ -23,5 +23,7 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Query(value = "SELECT * FROM movie WHERE addedDate > DATE_SUB(NOW(), INTERVAL 1 WEEK)", nativeQuery = true)
     public List<Movie> findMovieAddedLessThanOneWeek();
 
+    @Query(value = "SELECT movieName FROM movie WHERE id=?1", nativeQuery = true)
+    public String findMovieNamebyId(int id);
 
 }
