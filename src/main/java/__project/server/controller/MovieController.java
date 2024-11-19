@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestHeader;
-
+import org.springframework.web.bind.annotation.PostMapping;
 
 import __project.server.utils.JwtUtil;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class MovieController {
     
 
 
-    @GetMapping("/is-movie-public")
+    @PostMapping("/is-movie-public")
     public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, String> request) {
         String movieIdString = request.get("movieId").toString();
         int movieIdInt = Integer.parseInt(movieIdString);
@@ -81,7 +81,7 @@ public class MovieController {
         return ResponseEntity.ok(response);
 }
         
-        @GetMapping("/movie") 
+        @PostMapping("/movie") 
         public ResponseEntity<Map<String, Object>> getMovie(@RequestBody Map<String, String> request) {
 
         String movieIdString = request.get("movieId").toString();
