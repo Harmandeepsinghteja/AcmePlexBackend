@@ -43,6 +43,21 @@ public class ScheduleService {
        
     }
 
+    public int getPrice(int scheduleId) {
+        return scheduleRepository.getPrice(scheduleId);
+    }
+
+    public Timestamp getStartTime(int scheduleId) {
+        return scheduleRepository.getStartTime(scheduleId);
+    }
+
+    public int getScreenId(int scheduleId) {
+        return scheduleRepository.getScreenId(scheduleId);
+    }
+
+    public String getMovieName(int scheduleId) {
+        return movieService.getMovieName(scheduleRepository.findById(scheduleId).get().getMovieId());
+    }
 
 
 }

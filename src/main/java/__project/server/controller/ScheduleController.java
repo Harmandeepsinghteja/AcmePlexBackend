@@ -1,6 +1,6 @@
 package __project.server.controller;
 
-
+import __project.server.service.SeatService;
 import __project.server.model.Schedule;
 import __project.server.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PathVariable;
+ 
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,14 +33,16 @@ public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private SeatService seatService;
 
-    @GetMapping("/showtimes")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@RequestBody Map<String, String> request,
+    @GetMapping("/showtimes/{movieId}")
+    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@PathVariable("movieId") int movieId,
                                                                                 @RequestHeader String token) {
                                                                                     
         int userId = JwtUtil.verifyJwt(token);
-        String movieIdString = request.get("movieId").toString();
-        int movieIdInt = Integer.parseInt(movieIdString);
+        // String movieIdString = request.get("movieId").toString();
+        int movieIdInt = movieId;
 
         List<Schedule> schedules = scheduleService.getShowTimes(movieIdInt);
         
@@ -75,4 +80,35 @@ public class ScheduleController {
         // System.out.println(result);
         return ResponseEntity.ok(result);
     }
+
+
+
+
+    @GetMapping("/schedule/{scheduleId}")
+    public ResponseEntity<Map<String,Object>> getSchedule(@PathVariable("scheduleId") int scheduleId,
+                                                @RequestHeader String token) {
+        // int userId = JwtUtil.verifyJwt(token);
+        Map<String,Object> result = new TreeMap<>();
+        ArrayList<ArrayList<Boolean>> seats = seatService.getSeats(scheduleId);
+        int price = scheduleService.getPrice(scheduleId);
+        Boolean areNonPublicSeatsAvailable = seatService.isNonPublicSeatsFilled(scheduleId);
+        int screenId = scheduleService.getScreenId(scheduleId);
+        Timestamp startTime = scheduleService.getStartTime(scheduleId);
+        String movieName = scheduleService.getMovieName(scheduleId);
+
+        result.put("seats", seats);
+        result.put("price", price);
+        result.put("areNonPublicSeatsFilled", areNonPublicSeatsAvailable);
+        result.put("screenId", screenId);
+        result.put("startTime", startTime);
+        result.put("movieName", movieName);
+        return ResponseEntity.ok(result);
+
+        
+
+    }
+
+
 }
+
+
