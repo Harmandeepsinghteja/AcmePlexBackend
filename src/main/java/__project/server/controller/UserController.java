@@ -30,7 +30,7 @@ public class UserController {
         return jwt;
     }
 
-    @GetMapping("login")
+    @PostMapping("/login")
     public String loginUser(@RequestBody User user) {
         String jwt = userService.loginUser(user);
         return jwt;
