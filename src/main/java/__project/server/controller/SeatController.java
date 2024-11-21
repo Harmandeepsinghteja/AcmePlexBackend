@@ -60,21 +60,21 @@ public class SeatController {
     public Boolean reserveSeat(@RequestBody Map<String,String> request,
                                @RequestHeader String token) {   
         int userId = JwtUtil.verifyJwt(token);
-        String movieIdString = request.get("movieId").toString();
-        String screenId = request.get("screenId").toString();
-        String dateString = request.get("date").toString();
-        String timeString = request.get("time").toString();
-        int screenIdInt = Integer.parseInt(screenId);
-        int movieIdInt = Integer.parseInt(movieIdString);
-        LocalDate date = LocalDate.parse(dateString);
-        LocalTime time = LocalTime.parse(timeString);
-        LocalDateTime combined =  LocalDateTime.of(date, time);
-        Timestamp timestampDate = Timestamp.valueOf(combined);
-        String seatId = request.get("seatId").toString();
+        int scheduleId = Integer.parseInt(request.get("scheduleId").toString());
+        // String screenId = request.get("screenId").toString();
+        // String dateString = request.get("date").toString();
+        // String timeString = request.get("time").toString();
+        // int screenIdInt = Integer.parseInt(screenId);
+        // int movieIdInt = Integer.parseInt(movieIdString);
+        // LocalDate date = LocalDate.parse(dateString);
+        // LocalTime time = LocalTime.parse(timeString);
+        // LocalDateTime combined =  LocalDateTime.of(date, time);
+        // Timestamp timestampDate = Timestamp.valueOf(combined);
+        String seatId = request.get("seatNumber").toString();
         int seatIdInt = Integer.parseInt(seatId);
         
 
-        int screenIdFromSchedule = scheduleService.getScreenId(movieIdInt,screenIdInt,timestampDate);
+        int screenIdFromSchedule = scheduleId;
         if(screenIdFromSchedule == -1){
             System.out.println("Screen Id not found");
             return false;
