@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,45 +38,49 @@ public class ScheduleController {
     private SeatService seatService;
 
     @GetMapping("/showtimes/{movieId}")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getSchedules(@PathVariable("movieId") int movieId,
+    public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getSchedules(@PathVariable("movieId") int movieId,
                                                                                 @RequestHeader String token) {
                                                                                     
         int userId = JwtUtil.verifyJwt(token);
-        // String movieIdString = request.get("movieId").toString();
+        
         int movieIdInt = movieId;
 
         List<Schedule> schedules = scheduleService.getShowTimes(movieIdInt);
         
         Map<String, Map<Integer, Set<String>>> groupedSchedules = new TreeMap<>();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-        Map<String, Map<String, List<String>>> result = new TreeMap<>();
+        Map<String, Map<String, List<Map<String,Object>>>> result = new TreeMap<>();
         
 
         for (Schedule schedule : schedules) {
             System.out.println("Schedule " + schedule.getStartTime());
             String date = dateFormat.format(schedule.getStartTime());
             String time = timeFormat.format(schedule.getStartTime());
+            int scheduleId = schedule.getId();
             String screenName =  scheduleService.getScreenName(schedule.getScreenId()); 
             
-            
+            Map<String, Object> scheduleMap = new HashMap<>();
+            scheduleMap.put("time", time);  // Keep time as String
+            scheduleMap.put("scheduleId", scheduleId); 
 
             result.computeIfAbsent(date, k -> new TreeMap<>())
                   .computeIfAbsent(screenName, k -> new ArrayList<>())
-                  .add(time);
+                    .add(scheduleMap);
+                 
         }
 
 
         
 
         // Sort the times for each screen
-        for (Map<String, List<String>> dateMap : result.values()) {
-            for (List<String> times : dateMap.values()) {
-                Collections.sort(times);
-            }
-        }
+        // for (Map<String, List<List<String>>> dateMap : result.values()) {
+        //     for (List<List<String>> times : dateMap.values()) {
+        //         Collections.sort(times, (a, b) -> a.get(0).compareTo(b.get(0)));
+        //     }
+        // }
 
         // System.out.println(result);
         return ResponseEntity.ok(result);
@@ -87,7 +92,7 @@ public class ScheduleController {
     @GetMapping("/schedule/{scheduleId}")
     public ResponseEntity<Map<String,Object>> getSchedule(@PathVariable("scheduleId") int scheduleId,
                                                 @RequestHeader String token) {
-        // int userId = JwtUtil.verifyJwt(token);
+        int userId = JwtUtil.verifyJwt(token);
         Map<String,Object> result = new TreeMap<>();
         ArrayList<ArrayList<Boolean>> seats = seatService.getSeats(scheduleId);
         int price = scheduleService.getPrice(scheduleId);
