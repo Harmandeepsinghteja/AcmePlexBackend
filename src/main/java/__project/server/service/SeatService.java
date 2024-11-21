@@ -58,9 +58,21 @@ public class SeatService {
 
 
 
-    public void reserveSeat(int scheduleId, int seatId) {
+    public Boolean reserveSeat(int scheduleId, int seatId) {
         System.out.println("Reserving seat " + seatId + " for schedule " + scheduleId);
-        seatRepository.reserveSeat(scheduleId, seatId);
+
+
+        ArrayList<ArrayList<Boolean>> seatStructure =   getSeats(scheduleId);
+        int row = (seatId-1)/10;
+        int col = (seatId-1)%10;
+        if(seatStructure.get(row).get(col)){
+            seatRepository.reserveSeat(scheduleId, seatId);
+        }
+        else{
+            return false;
+        }
+        
+        return true;
     }
 
 
