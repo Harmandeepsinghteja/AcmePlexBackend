@@ -23,4 +23,13 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query(value = "SELECT id FROM schedule WHERE movieId = ?1 AND screenId = ?2 AND startTime = ?3", nativeQuery = true)
     Integer findByMovieScreenDate(int movieId, int screenId, Timestamp time);
 
+    @Query(value = "SELECT price FROM schedule WHERE id = ?1", nativeQuery = true)
+    int getPrice(int scheduleId);
+
+    @Query(value = "SELECT startTime FROM schedule WHERE id = ?1", nativeQuery = true)
+    Timestamp getStartTime(int scheduleId);
+
+    @Query(value = "SELECT screenId FROM schedule WHERE id = ?1", nativeQuery = true)
+    int getScreenId(int scheduleId);
+
 }
