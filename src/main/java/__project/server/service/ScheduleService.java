@@ -59,5 +59,9 @@ public class ScheduleService {
         return movieService.getMovieName(scheduleRepository.findById(scheduleId).get().getMovieId());
     }
 
+    public int getMovieId(int scheduleId) {
+        return scheduleRepository.findById(scheduleId).get().getMovieId();
+    }
+
 
 }
