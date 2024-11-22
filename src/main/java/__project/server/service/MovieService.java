@@ -2,6 +2,7 @@ package __project.server.service;
 
 import __project.server.model.Movie;
 import __project.server.repositories.MovieRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public List<Movie> getPublicMovies() {
-        
         return movieRepository.findMovieAddedGreaterThanOneWeek();
     }
 
@@ -30,13 +30,24 @@ public class MovieService {
         return id;}
 
     public List<Movie> getNonPublicMovies() {
-        
         return movieRepository.findMovieAddedLessThanOneWeek();
     }
 
     public String getMovieName(int id) {
         String name = movieRepository.findMovieNamebyId(id);
         return name;
+    }
+
+    @Transactional
+    public void setPubliclyAnnounced(int id, boolean publiclyAnnounced) {
+        Movie movie = movieRepository.findById(id).get();
+        movie.setPubliclyAnnounced(publiclyAnnounced);
+    }
+
+    @Transactional
+    public void setPrivatelyAnnounced(int id, boolean privatelyAnnounced) {
+        Movie movie = movieRepository.findById(id).get();
+        movie.setPrivatelyAnnounced(privatelyAnnounced);
     }
 
 

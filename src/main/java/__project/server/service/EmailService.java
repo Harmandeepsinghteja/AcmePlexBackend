@@ -6,6 +6,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmailService {
 
@@ -27,5 +29,13 @@ public class EmailService {
         message.setText(body);
 
         mailSender.send(message);
+    }
+
+    public void sendEmail(List<String> to, String subject, String body) {
+        // Individually sending each email is less efficient than adding a list of email addresses in the "to" field,
+        // but it ensures that each recipient will not be able to see the email addresses of the other recipients
+        for (String emailAddress : to) {
+            sendEmail(emailAddress, subject, body);
+        }
     }
 }

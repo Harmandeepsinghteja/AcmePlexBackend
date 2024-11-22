@@ -14,7 +14,9 @@ create table if not exists movie (
     id int auto_increment primary key,
     movieName varchar(50) not null,
     addedDate timestamp default NOW() not null,
-    url varchar(2048) null
+    url varchar(2048) not null,
+    privatelyAnnounced tinyint(1) default 0 not null,
+    publiclyAnnounced tinyint(1) default 0 not null
 );
 
 create table if not exists screen (
@@ -113,13 +115,13 @@ DELIMITER ;
 
 
 
-INSERT INTO movie (id,movieName, addedDate,url)
+INSERT INTO movie (id, movieName, addedDate,url, privatelyAnnounced, publiclyAnnounced)
 VALUES
-	(1,'Interstellar Public','2024-08-24','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/45fc99105415493.619ded0619991.jpg'),
-	(2,'Tenet Private','2024-11-08','https://hips.hearstapps.com/hmg-prod/images/tenet-lead-1622118390.jpg?crop=0.563xw:1.00xh;0.155xw,0&resize=2048:*'),
-	(3,'Man of Steel Private','2024-11-08','https://i.pinimg.com/736x/ec/f7/32/ecf732e06f0b5cb325e84e78c5ff89c1.jpg'),
-	(4,'Inception Public','2024-11-01','https://flxt.tmsimg.com/assets/p7825626_p_v8_af.jpg'),
-    (5,'The Dark Knight Rises Public','2024-11-13','https://th.bing.com/th/id/OIP.ILrjvLryU-PMd7Cl7Yh7QQHaK-?rs=1&pid=ImgDetMain');
+	(1,'Interstellar','2024-10-24','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/45fc99105415493.619ded0619991.jpg', 0, 0),
+	(2,'Tenet','2024-10-24','https://hips.hearstapps.com/hmg-prod/images/tenet-lead-1622118390.jpg?crop=0.563xw:1.00xh;0.155xw,0&resize=2048:*', 0, 0),
+	(3,'Man of Steel','2024-11-21','https://i.pinimg.com/736x/ec/f7/32/ecf732e06f0b5cb325e84e78c5ff89c1.jpg', 0, 0),
+	(4,'Inception','2024-11-21','https://flxt.tmsimg.com/assets/p7825626_p_v8_af.jpg', 0, 0),
+    (5,'The Dark Knight Rises','2024-11-21','https://th.bing.com/th/id/OIP.ILrjvLryU-PMd7Cl7Yh7QQHaK-?rs=1&pid=ImgDetMain', 0, 0);
 
 INSERT INTO screen (id, screenName, length,width)
 VALUES

@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +54,18 @@ public class UserService {
         }
         User user = userOptional.get();
         return userOptional.get();
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<User> getPremiumUsers() {
+        return userRepository.findPremiumUsers();
+    }
+
+    public List<User> getNonPremiumUsers() {
+        return userRepository.findNonPremiumUsers();
     }
 
     // With transaction, you can just fetch a user from the database, and update its properties using the class
