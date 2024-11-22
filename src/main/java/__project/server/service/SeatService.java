@@ -72,7 +72,9 @@ public class SeatService {
         }
     }
 
-
+    public void makeSeatAvailable(int scheduleId, int seatId) {
+        seatRepository.makeSeatAvailable(scheduleId, seatId);
+    }
 
 
     public Boolean isNonPublicSeatsFilled(int screenIdFromSchedule) {
