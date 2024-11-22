@@ -14,6 +14,12 @@ public class SeatService {
     @Autowired
     private SeatRepository seatRepository;
 
+    @Autowired
+    private ScheduleService scheduleService;
+
+    @Autowired
+    private MovieService movieService;
+
     private final int row = 5;
     private final int col = 10;
     private final int totalPercentageSeatsAllowedForRegisteredUser = 10;
@@ -78,6 +84,12 @@ public class SeatService {
 
 
     public Boolean isNonPublicSeatsFilled(int screenIdFromSchedule) {
+
+        // If movie is public then return false
+        int movieId = scheduleService.getMovieId(screenIdFromSchedule);
+        if(movieService.isMoviePublic(movieId)){
+            return false;
+        }
 
         ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenIdFromSchedule);
         int totalSeatsBooked=0;
