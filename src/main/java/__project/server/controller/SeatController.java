@@ -57,7 +57,7 @@ public class SeatController {
     }
 
     @PostMapping("/reserve")
-    public Boolean reserveSeat(@RequestBody Map<String,String> request,
+    public void reserveSeat(@RequestBody Map<String,String> request,
                                @RequestHeader String token) {   
         int userId = JwtUtil.verifyJwt(token);
         int scheduleId = Integer.parseInt(request.get("scheduleId").toString());
@@ -67,7 +67,7 @@ public class SeatController {
 
         
 
-        return seatService.reserveSeat(scheduleId, seatIdInt);
+        seatService.reserveSeat(scheduleId, seatIdInt);
     }
 
 

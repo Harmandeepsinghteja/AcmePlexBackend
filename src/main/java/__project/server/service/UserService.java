@@ -49,7 +49,6 @@ public class UserService {
             );
         }
         User user = userOptional.get();
-        user.setPassword(null);
         return userOptional.get();
     }
 
