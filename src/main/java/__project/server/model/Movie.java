@@ -32,7 +32,13 @@ public class Movie {
 
     @Column(name = "addedDate")
     private Date addedDate;
+
+    @Column(name = "url")
     private String url;
 
+    @Column(name = "privatelyAnnounced")
+    private boolean privatelyAnnounced;
 
+    @Column(name = "publiclyAnnounced")
+    private boolean publiclyAnnounced;
 }

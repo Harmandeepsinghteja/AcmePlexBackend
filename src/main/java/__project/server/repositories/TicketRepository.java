@@ -11,9 +11,8 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
-    @Query(value = "" +
-            """
-            SELECT ticket.id as ticketId, movie.movieName as movieName, screen.screenName as screenNumber, 
+    @Query(value = """
+            SELECT ticket.id as ticketId, movie.movieName as movieName, screen.screenName as screenNumber,
             ticket.seatNumber, schedule.startTime, ticket.seatNumber
             FROM ticket
             JOIN schedule on schedule.id = ticket.scheduleId
