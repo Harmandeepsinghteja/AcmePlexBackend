@@ -2,7 +2,9 @@ package __project.server.service;
 
 import __project.server.repositories.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -58,10 +60,7 @@ public class SeatService {
 
 
 
-    public Boolean reserveSeat(int scheduleId, int seatId) {
-        System.out.println("Reserving seat " + seatId + " for schedule " + scheduleId);
-
-
+    public void reserveSeat(int scheduleId, int seatId) {
         ArrayList<ArrayList<Boolean>> seatStructure =   getSeats(scheduleId);
         int row = (seatId-1)/10;
         int col = (seatId-1)%10;
@@ -69,10 +68,8 @@ public class SeatService {
             seatRepository.reserveSeat(scheduleId, seatId);
         }
         else{
-            return false;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat is not available");
         }
-        
-        return true;
     }
 
 

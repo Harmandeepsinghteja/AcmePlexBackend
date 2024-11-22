@@ -29,37 +29,44 @@ import java.util.concurrent.TimeUnit;
 public class TicketService {
 
     private static final int CANCELLATION_DEADLINE_IN_HOURS = 72;
-    private static double ADMIN_FEE_PERCENTAGE = 0.15;
+    private static final double ADMIN_FEE_PERCENTAGE = 0.15;
 
     private final TicketRepository ticketRepository;
     private final PaymentRepository paymentRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleService scheduleService;
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final CreditRefundRepository creditRefundRepository;
     private final EmailService emailService;
+    private final SeatService seatService;
 
     @Autowired
     public TicketService(
             TicketRepository ticketRepository,
             PaymentRepository paymentRepository,
             ScheduleRepository scheduleRepository,
+            ScheduleService scheduleService,
             SeatRepository seatRepository,
             UserRepository userRepository,
             CreditRefundRepository creditRefundRepository,
-            EmailService emailService) {
+            EmailService emailService,
+            SeatService seatService) {
         this.ticketRepository = ticketRepository;
+        this.paymentRepository = paymentRepository;
         this.scheduleRepository = scheduleRepository;
+        this.scheduleService = scheduleService;
         this.seatRepository = seatRepository;
         this.userRepository = userRepository;
         this.creditRefundRepository = creditRefundRepository;
-        this.paymentRepository = paymentRepository;
+
         this.emailService = emailService;
+        this.seatService = seatService;
     }
 
     @Transactional
     public void bookTicket(Ticket ticket) {
-        Seat seat = validateTicketDetails(ticket);
+        //Seat seat = validateTicketDetails(ticket);
         User user = userRepository.findById(ticket.getUserId()).get();
 
         // Use up any available credits to purchase this ticket
@@ -94,12 +101,20 @@ public class TicketService {
                 moneySpent);
         paymentRepository.save(payment);
 
-        // Set seat to unavailable
-        seat.setAvailable(false);
+        // Book seat (it sets seat to be unavailable)
+        seatService.reserveSeat(ticket.getScheduleId(), ticket.getSeatNumber());
 
         // Send email
-        String emailBody = "Your ticket number is: " + savedTicket.getId();
-        emailService.sendEmail(user.getEmail(), "Ticket Reservation", emailBody);
+        String emailBody = "Hello,\n"
+                + "This email is a confirmation and receipt of your ticket reservation.\n\n"
+                + "Ticket Number: " + savedTicket.getId() + "\n"
+                + "Seat Number: " + ticket.getSeatNumber() + "\n"
+                + "Movie: " + scheduleService.getMovieName(ticket.getScheduleId()) + "\n"
+                + "Start time: " + scheduleService.getStartTime(ticket.getScheduleId()) + "\n\n"
+                + "We look forward to seeing you there!\n";
+
+                //"Your ticket number is: " + savedTicket.getId();
+        emailService.sendEmail(user.getEmail(), "Acmeplex Ticket Reservation", emailBody);
     }
 
     public List<ReservationDetails> getUpcomingReservedTickets(int userId) {
@@ -164,7 +179,7 @@ public class TicketService {
         return diff < 72;
     }
 
-    private Seat validateTicketDetails(Ticket ticket) {
+    /*private Seat validateTicketDetails(Ticket ticket) {
         // Check if user exists in db
         if (!userRepository.existsById(ticket.getUserId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist");
@@ -185,6 +200,6 @@ public class TicketService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat is not available");
         }
         return seat;
-    }
+    }*/
 
 }
