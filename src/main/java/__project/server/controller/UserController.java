@@ -54,4 +54,10 @@ public class UserController {
         userService.updatePaymentMethod(userId, user.getPaymentMethod(), user.getCardNumber());
     }
 
+    @PatchMapping("buy-premium")
+    public void setMembershipStatusToPremium(@RequestHeader("token") String token) {
+        int userId = JwtUtil.verifyJwt(token);
+        userService.setMembershipStatusToPremium(userId);
+    }
+
 }
