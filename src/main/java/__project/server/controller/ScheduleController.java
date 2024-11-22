@@ -108,12 +108,7 @@ public class ScheduleController {
         result.put("startTime", startTime);
         result.put("movieName", movieName);
         return ResponseEntity.ok(result);
-
-        
-
     }
-
-
 }
 
 
