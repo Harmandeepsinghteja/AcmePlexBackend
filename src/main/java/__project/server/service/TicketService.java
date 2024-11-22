@@ -1,12 +1,9 @@
 package __project.server.service;
 
 import __project.server.Entity.ReservationDetails;
-import __project.server.model.CreditRefund;
 import __project.server.model.Payment;
 import __project.server.model.Ticket;
 import __project.server.model.User;
-import __project.server.repositories.CreditRefundRepository;
-import __project.server.repositories.PaymentRepository;
 import __project.server.repositories.TicketRepository;
 import __project.server.utils.MembershipStatus;
 import jakarta.transaction.Transactional;
