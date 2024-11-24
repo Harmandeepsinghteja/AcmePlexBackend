@@ -28,21 +28,27 @@ public class MovieController {
 
     @GetMapping("/public-movies")  
     public ResponseEntity<List<Map<String, Object>>> getMovies() {
-        List<Movie> movies = movieService.getPublicMovies();
-        List<Map<String, Object>> response = new ArrayList<>();
-        for (Movie movie : movies) {
-            Map<String, Object> item = new HashMap<>();
-            item.put("movieId", movie.getId());
-            item.put("movieName", movie.getMovieName());
-            item.put("addedDate", movie.getAddedDate());
-            item.put("url", movie.getUrl());
-            response.add(item);
+        try{
+            List<Movie> movies = movieService.getPublicMovies();
+            List<Map<String, Object>> response = new ArrayList<>();
+            for (Movie movie : movies) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("movieId", movie.getId());
+                item.put("movieName", movie.getMovieName());
+                item.put("addedDate", movie.getAddedDate());
+                item.put("url", movie.getUrl());
+                response.add(item);
+            }
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+
+            return ResponseEntity.status(501).build();
+    
         }
 
-        return ResponseEntity.ok(response);
-}
-
-    // @GetMapping("/is-movie-public")
+    }
+        // @GetMapping("/is-movie-public")
     // public boolean isMoviePublic(@PathVariable("id") int id) {
     //     boolean isPublic = movieService.isMoviePublic(id);
 
@@ -50,37 +56,49 @@ public class MovieController {
     // }
     
 
-
+    // TODO: Api Not Used -> Need to be removed
     @PostMapping("/is-movie-public")
     public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, String> request) {
         String movieIdString = request.get("movieId").toString();
-        int movieIdInt = Integer.parseInt(movieIdString);
-        System.out.println("id: " + movieIdInt);
-        if (movieIdString == null) {
+        
+        if (movieIdString == null || movieIdString.isEmpty()) {
             return ResponseEntity.badRequest().body(false);
         }
+
+        try{
+        int movieIdInt = Integer.parseInt(movieIdString);
         boolean isPublic = movieService.isMoviePublic(movieIdInt);
         return ResponseEntity.ok(isPublic);
     }
-
-        @GetMapping("/non-public-movies") 
-        public ResponseEntity<List<Map<String, Object>>> getNonPublicMovies(@RequestHeader String token) {
-        int userId = JwtUtil.verifyJwt(token);
-        
-        List<Movie> movies = movieService.getNonPublicMovies();
-        List<Map<String, Object>> response = new ArrayList<>();
-        for (Movie movie : movies) {
-            Map<String, Object> item = new HashMap<>();
-            item.put("movieId", movie.getId());
-            item.put("movieName", movie.getMovieName());
-            item.put("addedDate", movie.getAddedDate());
-            item.put("url", movie.getUrl());
-            response.add(item);
+        catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(false);
         }
+    }
 
+    
+    @GetMapping("/non-public-movies") 
+    public ResponseEntity<List<Map<String, Object>>> getNonPublicMovies(@RequestHeader String token) {
+        int userId = JwtUtil.verifyJwt(token); 
+        try{   
+            List<Movie> movies = movieService.getNonPublicMovies();
+            List<Map<String, Object>> response = new ArrayList<>();
+            for (Movie movie : movies) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("movieId", movie.getId());
+                item.put("movieName", movie.getMovieName());
+                item.put("addedDate", movie.getAddedDate());
+                item.put("url", movie.getUrl());
+                response.add(item);
+        }
         return ResponseEntity.ok(response);
-}
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(501).build();
+        }
+    }
         
+
+        //TODO: Api Not Used -> Need to be removed
         @PostMapping("/movie") 
         public ResponseEntity<Map<String, Object>> getMovie(@RequestBody Map<String, String> request) {
 

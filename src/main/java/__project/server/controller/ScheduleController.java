@@ -6,6 +6,7 @@ import __project.server.service.SeatService;
 import __project.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,22 +37,22 @@ public class ScheduleController {
 
     @GetMapping("/showtimes/{movieId}")
     public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getSchedules(@PathVariable("movieId") int movieId,
-                                                                                @RequestHeader String token) {
-                                                                                    
+                                                                                @RequestHeader String token) {                                                 
         int userId = JwtUtil.verifyJwt(token);
+        try{
         
-        int movieIdInt = movieId;
+        if(movieId < 0 ){
+            return ResponseEntity.badRequest().build();
+        }
 
-        List<Schedule> schedules = scheduleService.getShowTimes(movieIdInt);
-        
+        List<Schedule> schedules = scheduleService.getShowTimes(movieId);
+
         Map<String, Map<Integer, Set<String>>> groupedSchedules = new TreeMap<>();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
         Map<String, Map<String, List<Map<String,Object>>>> result = new TreeMap<>();
-        
-
         for (Schedule schedule : schedules) {
             System.out.println("Schedule " + schedule.getStartTime());
             String date = dateFormat.format(schedule.getStartTime());
@@ -62,25 +63,22 @@ public class ScheduleController {
             Map<String, Object> scheduleMap = new HashMap<>();
             scheduleMap.put("time", time);  // Keep time as String
             scheduleMap.put("scheduleId", scheduleId); 
-
             result.computeIfAbsent(date, k -> new TreeMap<>())
                   .computeIfAbsent(screenName, k -> new ArrayList<>())
-                    .add(scheduleMap);
-                 
+                    .add(scheduleMap);        
         }
-
-
-        
-
         // Sort the times for each screen
         // for (Map<String, List<List<String>>> dateMap : result.values()) {
         //     for (List<List<String>> times : dateMap.values()) {
         //         Collections.sort(times, (a, b) -> a.get(0).compareTo(b.get(0)));
         //     }
         // }
-
-        // System.out.println(result);
         return ResponseEntity.ok(result);
+    }
+    catch(Exception e){
+        System.out.println(e);
+        return ResponseEntity.badRequest().build();
+        }
     }
 
 
@@ -90,6 +88,7 @@ public class ScheduleController {
     public ResponseEntity<Map<String,Object>> getSchedule(@PathVariable("scheduleId") int scheduleId,
                                                 @RequestHeader String token) {
         int userId = JwtUtil.verifyJwt(token);
+        try{
         Map<String,Object> result = new TreeMap<>();
         ArrayList<ArrayList<Boolean>> seats = seatService.getSeats(scheduleId);
         int price = scheduleService.getPrice(scheduleId);
@@ -105,6 +104,11 @@ public class ScheduleController {
         result.put("startTime", startTime);
         result.put("movieName", movieName);
         return ResponseEntity.ok(result);
+        }
+        catch(Exception e){
+            System.out.println(e);
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
 
