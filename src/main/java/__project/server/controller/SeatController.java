@@ -2,15 +2,16 @@ package __project.server.controller;
 
 import __project.server.service.ScheduleService;
 import __project.server.service.SeatService;
+import __project.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import __project.server.utils.JwtUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestHeader;
+
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,7 +58,7 @@ public class SeatController {
     }
 
     @PostMapping("/reserve")
-    public Boolean reserveSeat(@RequestBody Map<String,String> request,
+    public void reserveSeat(@RequestBody Map<String,String> request,
                                @RequestHeader String token) {   
         int userId = JwtUtil.verifyJwt(token);
         int scheduleId = Integer.parseInt(request.get("scheduleId").toString());
@@ -67,7 +68,7 @@ public class SeatController {
 
         
 
-        return seatService.reserveSeat(scheduleId, seatIdInt);
+        seatService.reserveSeat(scheduleId, seatIdInt);
     }
 
 

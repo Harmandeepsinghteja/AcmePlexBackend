@@ -3,6 +3,7 @@ package __project.server.service;
 import __project.server.model.User;
 import __project.server.repositories.UserRepository;
 import __project.server.utils.JwtUtil;
+import __project.server.utils.MembershipStatus;
 import __project.server.utils.PaymentMethod;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,8 +53,19 @@ public class UserService {
             );
         }
         User user = userOptional.get();
-        user.setPassword(null);
         return userOptional.get();
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<User> getPremiumUsers() {
+        return userRepository.findPremiumUsers();
+    }
+
+    public List<User> getNonPremiumUsers() {
+        return userRepository.findNonPremiumUsers();
     }
 
     // With transaction, you can just fetch a user from the database, and update its properties using the class
@@ -81,6 +96,18 @@ public class UserService {
         ));
         user.setPaymentMethod(newPaymentMethod);
         user.setCardNumber(newCardNumber);
+    }
+
+    @Transactional
+    public void setMembershipStatusToPremium(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "user not found"
+        ));
+        if (user.getMembershipStatus().equals(MembershipStatus.PREMIUM)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user is already premium");
+        }
+        user.setMemberShipStatus(MembershipStatus.PREMIUM);
+        user.setMembershipExpiryDate(new Timestamp(System.currentTimeMillis()));
     }
 
     private void validateCredentials(String email, String password) {
