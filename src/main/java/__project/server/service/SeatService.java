@@ -20,15 +20,13 @@ public class SeatService {
     @Autowired
     private MovieService movieService;
 
+    // TODO: Should be fetched from database
     private final int row = 5;
     private final int col = 10;
     private final int totalPercentageSeatsAllowedForRegisteredUser = 10;
     private final int capacity = 50;
 
-
-
-    public ArrayList<ArrayList<Boolean>> getSeats(int screenIdFromSchedule) { {
-        
+    public ArrayList<ArrayList<Boolean>> getSeats(int screenIdFromSchedule) { 
 
         ArrayList<ArrayList<Boolean>>  seat_map = new ArrayList<ArrayList<Boolean>>();
         for(int i=0; i<row; i++){
@@ -38,43 +36,31 @@ public class SeatService {
             System.out.println("Seat Number " + seatNumber);
             Boolean isAvaliable = false;
             try{
-            
                 isAvaliable = seatRepository.findByScheduleId(screenIdFromSchedule,seatNumber);
-            System.out.println("seatNumber " + seatNumber + " isAvaliable " + isAvaliable);
-
             }
             catch(Exception e){
                 System.out.println("Error " + e);
             }
+
             if(isAvaliable){
                 row_list.add(true);
             }
             else{
                 row_list.add(false);
             }
-           
             }
             seat_map.add(row_list);
         }
-        System.out.println("Seat Map " + seat_map);
-
-        // seat seats =  seatRepository.findById(id,);
-        // System.out.println("Seats " + seats);
-
-        return seat_map;}
+        return seat_map;
     }
-
-
+    
 
     public void reserveSeat(int scheduleId, int seatId) {
-        ArrayList<ArrayList<Boolean>> seatStructure =   getSeats(scheduleId);
-        int row = (seatId-1)/10;
-        int col = (seatId-1)%10;
-        if(seatStructure.get(row).get(col)){
+        if(isSeatAvailable(scheduleId, seatId)){
             seatRepository.reserveSeat(scheduleId, seatId);
         }
         else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat is not available");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Seat is not available");
         }
     }
 
@@ -82,18 +68,14 @@ public class SeatService {
         seatRepository.makeSeatAvailable(scheduleId, seatId);
     }
 
-
     public Boolean isNonPublicSeatsFilled(int screenIdFromSchedule) {
-
         // If movie is public then return false
         int movieId = scheduleService.getMovieId(screenIdFromSchedule);
         if(movieService.isMoviePublic(movieId)){
             return false;
         }
-
         ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenIdFromSchedule);
         int totalSeatsBooked=0;
-
         for(int i=0; i<5; i++){
             for(int j=0; j<10; j++){
                 if(!seatStructure.get(i).get(j)){
@@ -101,18 +83,16 @@ public class SeatService {
                 }
             }
         }
-
         if(totalSeatsBooked >= (totalPercentageSeatsAllowedForRegisteredUser*capacity)/100){
             return true;
         }
-
         return false;
-        
     }
 
+    private Boolean isSeatAvailable(int scheduleId, int seatId) {
 
-
-
+        return seatRepository.isSeatAvailable(scheduleId, seatId);
+    }
 
 
 

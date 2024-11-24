@@ -29,7 +29,7 @@ public class SeatController {
     private SeatService seatService;
     @Autowired ScheduleService scheduleService;
 
-
+    //TODO: Not Used Anyomre
     @GetMapping("/seats")
     public ArrayList<ArrayList<Boolean>> getSeats(
             @RequestBody Map<String, String> request,
@@ -57,6 +57,8 @@ public class SeatController {
         return seatService.getSeats(screenIdFromSchedule);
     }
 
+    
+    // TODO: Not Used Anymore. Ticket Controlller Handling this api
     @PostMapping("/reserve")
     public void reserveSeat(@RequestBody Map<String,String> request,
                                @RequestHeader String token) {   
@@ -64,16 +66,10 @@ public class SeatController {
         int scheduleId = Integer.parseInt(request.get("scheduleId").toString());
         String seatId = request.get("seatNumber").toString();
         int seatIdInt = Integer.parseInt(seatId);
-        
-
-        
-
         seatService.reserveSeat(scheduleId, seatIdInt);
     }
 
-
-
-
+    // TODO: Not Used Anymore
     @GetMapping("/is-non-public-seats-filled")
     public Boolean getNonPublicSeatsFilled(@RequestBody Map<String, String> request,
                                             @RequestHeader String token) {
@@ -95,13 +91,11 @@ public class SeatController {
             System.out.println("Screen Id not found");
             return false;
         }
-    
         // System.out.println("id: " + movieIdInt);
         // System.out.println("screenId: " + screenIdInt);
         // System.out.println("date: " + date);
         // System.out.println("time: " + time);
         // System.out.println("combined: " + combined);
-
         return seatService.isNonPublicSeatsFilled(screenIdFromSchedule);
     }
 

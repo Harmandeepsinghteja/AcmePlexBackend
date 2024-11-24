@@ -27,6 +27,8 @@ public interface SeatRepository extends JpaRepository<Seat, SeatId>{
     @Query(value = "UPDATE seat SET isAvailable = 1 WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
     public void makeSeatAvailable(int scheduleId, int seatId);
 
- 
+
+    @Query(value = "SELECT isAvailable FROM seat WHERE scheduleId = ?1 AND seatNumber = ?2", nativeQuery = true)
+    public Boolean isSeatAvailable(int scheduleId, int seatId);
 
 }
