@@ -38,7 +38,6 @@ public class MovieController {
             item.put("url", movie.getUrl());
             response.add(item);
         }
-
         return ResponseEntity.ok(response);
 }
 
@@ -49,18 +48,22 @@ public class MovieController {
     //     return isPublic;
     // }
     
-
-
     @PostMapping("/is-movie-public")
     public ResponseEntity<Boolean> isMoviePublic(@RequestBody Map<String, String> request) {
         String movieIdString = request.get("movieId").toString();
-        int movieIdInt = Integer.parseInt(movieIdString);
-        System.out.println("id: " + movieIdInt);
-        if (movieIdString == null) {
+        
+        if (movieIdString == null || movieIdString.isEmpty()) {
             return ResponseEntity.badRequest().body(false);
         }
+
+        try{
+        int movieIdInt = Integer.parseInt(movieIdString);
         boolean isPublic = movieService.isMoviePublic(movieIdInt);
         return ResponseEntity.ok(isPublic);
+    }
+        catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(false);
+        }
     }
 
         @GetMapping("/non-public-movies") 
