@@ -72,8 +72,9 @@ public class SeatService {
         // If movie is public then return false or movie is non public and less than 10 percent seats filled return false;
         int movieId = scheduleService.getMovieId(scheduleId);
         if(movieService.isMoviePublic(movieId)){
-            return false;
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Movie Not open for Public Yet");
         }
+
         ArrayList<ArrayList<Boolean>> seatStructure = getSeats(scheduleId);
         int totalSeatsBooked=0;
         for(int i=0; i<5; i++){
@@ -84,7 +85,8 @@ public class SeatService {
             }
         }
         if(totalSeatsBooked >= (totalPercentageSeatsAllowedForRegisteredUser*capacity)/100){
-            return true;
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Booking Has Been Closed for Premium User");
+            // return true;
         }
         return false;
     }
