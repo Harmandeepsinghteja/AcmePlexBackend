@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,10 @@ public class CreditRefundService {
             refundAmount = originalPrice - administrationFee;
             refundAmount = Math.round(refundAmount * 100.0) / 100.0;
         }
-        CreditRefund creditRefund = new CreditRefund(ticketId, refundAmount, new Date());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1); // to get previous year add -1
+        Date expirationDate = cal.getTime();
+        CreditRefund creditRefund = new CreditRefund(ticketId, refundAmount, expirationDate);
         creditRefundRepository.save(creditRefund);
     }
 
