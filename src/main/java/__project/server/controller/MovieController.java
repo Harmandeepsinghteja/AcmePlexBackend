@@ -107,16 +107,18 @@ public class MovieController {
             return ResponseEntity.badRequest().build();
         }
         
+        try{
         boolean isPublic = movieService.isMoviePublic(movieId);
-        // Get Movie Name
-        // String movieName = movieService.getMovieName(movieId);
-        // String url = movieService.geturl(movieId);
         Movie movie = movieService.getMovie(movieId);
         Map<String, Object> response = new HashMap<>();
         response.put("movieName", movie.getMovieName());
         response.put("url", movie.getUrl());
         response.put("isMoviePublic", isPublic);
         return ResponseEntity.ok(response);
+        }
+        catch(Exception e){
+                return ResponseEntity.status(501).build();
+        }
     }
 
 }
