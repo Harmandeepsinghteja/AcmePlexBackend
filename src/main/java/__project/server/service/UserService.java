@@ -110,7 +110,7 @@ public class UserService {
         user.setMemberShipStatus(MembershipStatus.PREMIUM);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, 1); // to get previous year add -1
-        Timestamp expirationDate = (Timestamp) cal.getTime();
+        Timestamp expirationDate = Timestamp.from(cal.getTime().toInstant());
         user.setMembershipExpiryDate(expirationDate);
     }
 
