@@ -50,5 +50,9 @@ public class MovieService {
         movie.setPrivatelyAnnounced(privatelyAnnounced);
     }
 
+    public Movie getMovie(int movieId){
+        return movieRepository.findById(movieId).get();
+    }
+
 
 }

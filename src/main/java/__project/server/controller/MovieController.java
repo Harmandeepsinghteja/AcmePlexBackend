@@ -6,6 +6,7 @@ import __project.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -98,19 +99,22 @@ public class MovieController {
     }
         
 
-        //TODO: Api Not Used -> Need to be removed
-        @PostMapping("/movie") 
-        public ResponseEntity<Map<String, Object>> getMovie(@RequestBody Map<String, String> request) {
 
-        String movieIdString = request.get("movieId").toString();
-        int movieIdInt = Integer.parseInt(movieIdString);
-        boolean isPublic = movieService.isMoviePublic(movieIdInt);
+        @GetMapping("/movie/{movieId}") 
+        public ResponseEntity<Map<String, Object>> getMovie(@PathVariable("movieId") int movieId) {
 
+        if(movieId < 0 ){
+            return ResponseEntity.badRequest().build();
+        }
+        
+        boolean isPublic = movieService.isMoviePublic(movieId);
         // Get Movie Name
-        String movieName = movieService.getMovieName(movieIdInt);
-
+        // String movieName = movieService.getMovieName(movieId);
+        // String url = movieService.geturl(movieId);
+        Movie movie = movieService.getMovie(movieId);
         Map<String, Object> response = new HashMap<>();
-        response.put("movieName", movieName);
+        response.put("movieName", movie.getMovieName());
+        response.put("url", movie.getUrl());
         response.put("isMoviePublic", isPublic);
         return ResponseEntity.ok(response);
     }
