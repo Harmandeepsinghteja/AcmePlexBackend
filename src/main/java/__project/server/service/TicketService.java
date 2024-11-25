@@ -50,6 +50,14 @@ public class TicketService {
     @Transactional
     public void bookTicket(Ticket ticket) {
         //Seat seat = validateTicketDetails(ticket);
+
+        // Return 400 if schedule time has already passed
+        if (scheduleService.getStartTime(ticket.getScheduleId()).before(new Date())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Showtime has has passed"
+            );
+        }
+
         User user = userService.getUser(ticket.getUserId());
 
         // Use up any available credits to purchase this ticket
