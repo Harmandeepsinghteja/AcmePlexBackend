@@ -88,8 +88,7 @@ public class SeatService {
             }
         }
         if(totalSeatsBooked >= (totalPercentageSeatsAllowedForRegisteredUser*capacity)/100){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Booking Has Been Closed for Premium User");
-            // return true;
+            return true;
         }
         return false;
     }
