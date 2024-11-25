@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -107,7 +108,10 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user is already premium");
         }
         user.setMemberShipStatus(MembershipStatus.PREMIUM);
-        user.setMembershipExpiryDate(new Timestamp(System.currentTimeMillis()));
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1); // to get previous year add -1
+        Timestamp expirationDate = Timestamp.from(cal.getTime().toInstant());
+        user.setMembershipExpiryDate(expirationDate);
     }
 
     private void validateCredentials(String email, String password) {
