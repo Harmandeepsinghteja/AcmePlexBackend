@@ -26,7 +26,7 @@ public class SeatService {
     private final int totalPercentageSeatsAllowedForRegisteredUser = 10;
     private final int capacity = 50;
 
-    public ArrayList<ArrayList<Boolean>> getSeats(int screenIdFromSchedule) { 
+    public ArrayList<ArrayList<Boolean>> getSeats(int scheduleId) { 
 
         ArrayList<ArrayList<Boolean>>  seat_map = new ArrayList<ArrayList<Boolean>>();
         for(int i=0; i<row; i++){
@@ -36,7 +36,7 @@ public class SeatService {
             System.out.println("Seat Number " + seatNumber);
             Boolean isAvaliable = false;
             try{
-                isAvaliable = seatRepository.findByScheduleId(screenIdFromSchedule,seatNumber);
+                isAvaliable = seatRepository.findByScheduleId(scheduleId,seatNumber);
             }
             catch(Exception e){
                 System.out.println("Error " + e);
@@ -56,7 +56,7 @@ public class SeatService {
     
 
     public void reserveSeat(int scheduleId, int seatId) {
-        if(isSeatAvailable(scheduleId, seatId)){
+        if(isSeatAvailable(scheduleId, seatId) && !isNonPublicSeatsFilled(scheduleId)){
             seatRepository.reserveSeat(scheduleId, seatId);
         }
         else{
@@ -68,13 +68,13 @@ public class SeatService {
         seatRepository.makeSeatAvailable(scheduleId, seatId);
     }
 
-    public Boolean isNonPublicSeatsFilled(int screenIdFromSchedule) {
-        // If movie is public then return false
-        int movieId = scheduleService.getMovieId(screenIdFromSchedule);
+    public Boolean isNonPublicSeatsFilled(int scheduleId) {
+        // If movie is public then return false or movie is non public and less than 10 percent seats filled return false;
+        int movieId = scheduleService.getMovieId(scheduleId);
         if(movieService.isMoviePublic(movieId)){
             return false;
         }
-        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(screenIdFromSchedule);
+        ArrayList<ArrayList<Boolean>> seatStructure = getSeats(scheduleId);
         int totalSeatsBooked=0;
         for(int i=0; i<5; i++){
             for(int j=0; j<10; j++){
