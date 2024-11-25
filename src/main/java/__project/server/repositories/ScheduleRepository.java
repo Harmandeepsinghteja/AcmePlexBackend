@@ -32,4 +32,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query(value = "SELECT screenId FROM schedule WHERE id = ?1", nativeQuery = true)
     int getScreenId(int scheduleId);
 
+    @Query(value="Select count(*) from schedule where movieId=?1 and startTime>CURRENT_TIMESTAMP", nativeQuery=true)
+    int isScheduleAvailable(int movieId);
 }
