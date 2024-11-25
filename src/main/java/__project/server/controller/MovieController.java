@@ -33,6 +33,10 @@ public class MovieController {
             List<Movie> movies = movieService.getPublicMovies();
             List<Map<String, Object>> response = new ArrayList<>();
             for (Movie movie : movies) {
+                Boolean isScheduleAvilable = movieService.isScheduleAvailable(movie.getId());
+                if(!isScheduleAvilable){
+                    continue;
+                }
                 Map<String, Object> item = new HashMap<>();
                 item.put("movieId", movie.getId());
                 item.put("movieName", movie.getMovieName());
@@ -84,6 +88,10 @@ public class MovieController {
             List<Movie> movies = movieService.getNonPublicMovies();
             List<Map<String, Object>> response = new ArrayList<>();
             for (Movie movie : movies) {
+                Boolean isScheduleAvilable = movieService.isScheduleAvailable(movie.getId());
+                if(!isScheduleAvilable){
+                    continue;
+                }
                 Map<String, Object> item = new HashMap<>();
                 item.put("movieId", movie.getId());
                 item.put("movieName", movie.getMovieName());

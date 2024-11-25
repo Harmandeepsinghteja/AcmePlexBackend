@@ -2,6 +2,7 @@ package __project.server.service;
 
 import __project.server.model.Movie;
 import __project.server.repositories.MovieRepository;
+import __project.server.repositories.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     public List<Movie> getPublicMovies() {
         return movieRepository.findMovieAddedGreaterThanOneWeek();
@@ -54,5 +58,9 @@ public class MovieService {
         return movieRepository.findById(movieId).get();
     }
 
+    public Boolean isScheduleAvailable(int movieId){
+        int count = scheduleRepository.isScheduleAvailable(movieId);
+        return count>0;
+    }
 
 }
