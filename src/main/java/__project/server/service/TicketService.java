@@ -30,7 +30,6 @@ public class TicketService {
     private final SeatService seatService;
     private final MovieService movieService;
 
-
     @Autowired
     public TicketService(
             TicketRepository ticketRepository,
@@ -39,9 +38,7 @@ public class TicketService {
             UserService userService,
             CreditRefundService creditRefundService,
             EmailService emailService,
-            SeatService seatService
-            ,MovieService movieService
-            ) {
+            SeatService seatService, MovieService movieService) {
         this.ticketRepository = ticketRepository;
         this.paymentService = paymentService;
         this.scheduleService = scheduleService;
@@ -54,13 +51,12 @@ public class TicketService {
 
     @Transactional
     public void bookTicket(Ticket ticket) {
-        //Seat seat = validateTicketDetails(ticket);
+        // Seat seat = validateTicketDetails(ticket);
 
         // Return 400 if schedule time has already passed
         if (scheduleService.getStartTime(ticket.getScheduleId()).before(new Date())) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Showtime has has passed"
-            );
+                    HttpStatus.BAD_REQUEST, "Showtime has has passed");
         }
 
         User user = userService.getUser(ticket.getUserId());
@@ -86,21 +82,26 @@ public class TicketService {
         int movieId = scheduleService.getMovieId(ticket.getScheduleId());
 
         // If user is non-premium and movie is non-public, then throw exception
-        if (!movieService.isMoviePublic(movieId) && user.getMembershipStatus().equals(MembershipStatus.NON_PREMIUM) ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Non-premium users cannot book movies that are still private");
+        if (!movieService.isMoviePublic(movieId) && user.getMembershipStatus().equals(MembershipStatus.NON_PREMIUM)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Non-premium users cannot book movies that are still non-public. Please upgrade your account to premium to book a seat for non-public movie.");
         }
 
-        // If Movie is non public-> check if the nonpublic seats filled or not. If filled throw exception
+        // If Movie is non public-> check if the nonpublic seats filled or not. If
+        // filled throw exception
         // otherwise book seat
-         if(!movieService.isMoviePublic(movieId) && seatService.isNonPublicSeatsFilled(ticket.getScheduleId())){
-             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please Book Movie After Public Announcement");
-         }
+        if (!movieService.isMoviePublic(movieId) && seatService.isNonPublicSeatsFilled(ticket.getScheduleId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "A non-public movie screen can be booked up to 10% of its seat capacity, and this screen has reached its non-pubilc seat booking limit. Please wait until the movie becomes public to book a seat.");
+        }
 
         // Book seat (it sets seat to be unavailable)
         // Check if user is premium
-        /*if (user.getMembershipStatus().equals(MembershipStatus.PREMIUM) && ) {
-
-        }*/
+        /*
+         * if (user.getMembershipStatus().equals(MembershipStatus.PREMIUM) && ) {
+         * 
+         * }
+         */
         seatService.reserveSeat(ticket.getScheduleId(), ticket.getSeatNumber());
 
         // Send email
@@ -112,7 +113,7 @@ public class TicketService {
                 + "Start time: " + scheduleService.getStartTime(ticket.getScheduleId()) + "\n\n"
                 + "We look forward to seeing you there!\n";
 
-                //"Your ticket number is: " + savedTicket.getId();
+        // "Your ticket number is: " + savedTicket.getId();
         emailService.sendEmail(user.getEmail(), "Acmeplex Ticket Reservation", emailBody);
     }
 
@@ -120,26 +121,25 @@ public class TicketService {
         return ticketRepository.findUpcomingReservedTickets(userId);
     }
 
-    // With transaction, you can just fetch a something from the database, and update its properties using the class
-    // setters, and those properties will automatically be updated in the database as well, without having to use the
+    // With transaction, you can just fetch a something from the database, and
+    // update its properties using the class
+    // setters, and those properties will automatically be updated in the database
+    // as well, without having to use the
     // .save() method.
     @Transactional
     public void cancelTicket(int ticketId, int userId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "ticket with id " + ticketId + " not found"
-        ));
+                HttpStatus.NOT_FOUND, "ticket with id " + ticketId + " not found"));
 
         if (userId != ticket.getUserId()) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "ticket with id " + ticketId + " does not belong to this user"
-            );
+                    HttpStatus.BAD_REQUEST, "ticket with id " + ticketId + " does not belong to this user");
         }
 
         // Check if cancellation deadline has passed
         if (passedCancellationDeadline(ticket)) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Cancellation deadline has passed"
-            );
+                    HttpStatus.BAD_REQUEST, "Cancellation deadline has passed");
         }
 
         // Cancel ticket
@@ -164,27 +164,34 @@ public class TicketService {
         return diff < CANCELLATION_DEADLINE_IN_HOURS;
     }
 
-    /*private Seat validateTicketDetails(Ticket ticket) {
-        // Check if user exists in db
-        if (!userRepository.existsById(ticket.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist");
-        }
-
-        // Check if schedule exists in db
-        if (!scheduleRepository.existsById(ticket.getScheduleId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Schedule does not exist");
-        }
-        // Check if seat exists in db and is not already booked
-        Optional<Seat> seatOptional = seatRepository.findById(new SeatId(ticket.getScheduleId(), ticket.getSeatNumber()));
-        if (!seatOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seat does not exist");
-        }
-
-        Seat seat = seatOptional.get();
-        if (!seat.isAvailable()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat is not available");
-        }
-        return seat;
-    }*/
+    /*
+     * private Seat validateTicketDetails(Ticket ticket) {
+     * // Check if user exists in db
+     * if (!userRepository.existsById(ticket.getUserId())) {
+     * throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+     * "User does not exist");
+     * }
+     * 
+     * // Check if schedule exists in db
+     * if (!scheduleRepository.existsById(ticket.getScheduleId())) {
+     * throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+     * "Schedule does not exist");
+     * }
+     * // Check if seat exists in db and is not already booked
+     * Optional<Seat> seatOptional = seatRepository.findById(new
+     * SeatId(ticket.getScheduleId(), ticket.getSeatNumber()));
+     * if (!seatOptional.isPresent()) {
+     * throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+     * "Seat does not exist");
+     * }
+     * 
+     * Seat seat = seatOptional.get();
+     * if (!seat.isAvailable()) {
+     * throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+     * "Seat is not available");
+     * }
+     * return seat;
+     * }
+     */
 
 }
