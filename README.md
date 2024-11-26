@@ -38,6 +38,54 @@ cd AcmePlexBackend
 2. Backend Setup
 -> run resources/data.sql file to create and update database
 -> Update application.properties with your database credentials.
+    ### Configuration
+    Before running the application, you need to configure the application.properties file with your specific settings. Below is a template with explanations     for each property:
+   '''
+  # Application Name
+spring.application.name=server
+
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/movie_theater
+spring.datasource.username=root
+spring.datasource.password=password
+
+# JPA and Hibernate Settings
+# Uncomment the following lines to load dummy data and initialize the database schema
+# spring.jpa.defer-datasource-initialization=true
+# spring.sql.init.mode=always
+
+# Make this None in Production // TODO
+# spring.jpa.hibernate.ddl-auto=update
+
+# Prevent JPA from changing column names
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+# Show SQL Queries in Logs
+spring.jpa.show-sql=true
+
+# Security Configuration (Optional)
+# spring.security.user.name=admin
+# spring.security.user.password=admin
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+# spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+
+# Email Configuration for Sending Tickets and Receipts
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=yourMailingAccount@gmail.com
+spring.mail.password=your-email-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# CORS Configuration for Frontend Integration
+spring.mvc.cors.allowed-origins=http://127.0.0.1:5173
+
+
+   '''
+
+   
 -> Run the backend server:
 ```
 mvn spring-boot:run
