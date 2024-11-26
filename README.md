@@ -32,10 +32,17 @@ Payment Gateway: Integration with a secure payment processing service.
 ## Installation Instructions
 1. Clone the Repository:
 ```
-git clone https://github.com/yourusername/movie-theater-ticket-reservation-app.git
-cd movie-theater-ticket-reservation-app
-````
+git clone https://github.com/Harmandeepsinghteja/AcmePlexBackend.git
+cd AcmePlexBackend
+```
+2. Backend Setup
+-> run resources/data.sql file to create and update database
+-> Update application.properties with your database credentials.
+-> Run the backend server:
+```
+mvn spring-boot:run
 
+```
 
 
 
