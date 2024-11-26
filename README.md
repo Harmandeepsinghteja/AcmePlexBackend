@@ -26,3 +26,17 @@ Frontend: React.js for user interface development.
 Backend: Java Spring Boot for server-side logic.
 Database: MySQL for data storage and management.
 Payment Gateway: Integration with a secure payment processing service.
+
+
+
+## Installation Instructions
+1. Clone the Repository:
+```
+git clone https://github.com/yourusername/movie-theater-ticket-reservation-app.git
+cd movie-theater-ticket-reservation-app
+````
+
+
+
+
+
