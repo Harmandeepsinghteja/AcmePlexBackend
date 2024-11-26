@@ -37,8 +37,7 @@ public class ScheduleController {
 
     @GetMapping("/showtimes/{movieId}")
     public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getSchedules(@PathVariable("movieId") int movieId,
-                                                                                @RequestHeader String token) {                                                 
-        int userId = JwtUtil.verifyJwt(token);
+                                                                                @RequestHeader String token) {
         try{
         
         if(movieId < 0 ){
