@@ -110,8 +110,12 @@ public class User {
     }
 
     public MembershipStatus getMembershipStatus() {
-        if (membershipExpiryDate == null) return MembershipStatus.NON_PREMIUM;
-        else return MembershipStatus.PREMIUM;
+        if (membershipExpiryDate == null || membershipExpiryDate.before(new Timestamp(System.currentTimeMillis())) ) {
+            return MembershipStatus.NON_PREMIUM;
+        }
+        else {
+            return MembershipStatus.PREMIUM;
+        }
     }
 
     public void setMemberShipStatus(MembershipStatus memberShipStatus) {
