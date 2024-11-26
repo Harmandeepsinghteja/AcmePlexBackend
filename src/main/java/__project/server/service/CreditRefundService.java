@@ -29,13 +29,14 @@ public class CreditRefundService {
     }
 
     public void createCreditRefund(int ticketId, double originalPrice, MembershipStatus membershipStatus) {
-        double refundAmount = 0;
+        double refundAmount = originalPrice;
 
         if (membershipStatus.equals(MembershipStatus.NON_PREMIUM)) {
             double administrationFee = originalPrice * ADMIN_FEE_PERCENTAGE;
-            refundAmount = originalPrice - administrationFee;
+            refundAmount -= administrationFee;
             refundAmount = Math.round(refundAmount * 100.0) / 100.0;
         }
+
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, 1); // to get previous year add -1
         Date expirationDate = cal.getTime();

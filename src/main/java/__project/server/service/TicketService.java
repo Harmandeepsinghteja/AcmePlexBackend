@@ -79,6 +79,10 @@ public class TicketService {
         paymentService.addPayment(payment);
 
         // Book seat (it sets seat to be unavailable)
+        // Check if user is premium
+        /*if (user.getMembershipStatus().equals(MembershipStatus.PREMIUM) && ) {
+
+        }*/
         seatService.reserveSeat(ticket.getScheduleId(), ticket.getSeatNumber());
 
         // Send email
