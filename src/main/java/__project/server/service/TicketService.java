@@ -28,6 +28,8 @@ public class TicketService {
     private final CreditRefundService creditRefundService;
     private final EmailService emailService;
     private final SeatService seatService;
+    // private final MovieService movieService;
+
 
     @Autowired
     public TicketService(
@@ -37,7 +39,9 @@ public class TicketService {
             UserService userService,
             CreditRefundService creditRefundService,
             EmailService emailService,
-            SeatService seatService) {
+            SeatService seatService
+            // ,MovieService movieService
+            ) {
         this.ticketRepository = ticketRepository;
         this.paymentService = paymentService;
         this.scheduleService = scheduleService;
@@ -45,6 +49,7 @@ public class TicketService {
         this.creditRefundService = creditRefundService;
         this.emailService = emailService;
         this.seatService = seatService;
+        // this.movieService = movieService;
     }
 
     @Transactional
@@ -77,6 +82,13 @@ public class TicketService {
                 creditSpent,
                 moneySpent);
         paymentService.addPayment(payment);
+
+        // If Movie is non public-> check if the nonpublic seats filled or not. if filled throw exception
+        // otherwise book seat
+        // int movieId = scheduleService.getMovieId(ticket.getScheduleId());
+        // if(!movieService.isMoviePublic(movieId) && seatService.isNonPublicSeatsFilled(ticket.getScheduleId())  ){
+        //     throw new ResponseStatusException(HttpStatus.CONFLICT, "Please Book Movie After Public Announcement");
+        // }
 
         // Book seat (it sets seat to be unavailable)
         // Check if user is premium
