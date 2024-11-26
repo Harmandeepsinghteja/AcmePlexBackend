@@ -28,7 +28,7 @@ public class TicketService {
     private final CreditRefundService creditRefundService;
     private final EmailService emailService;
     private final SeatService seatService;
-    // private final MovieService movieService;
+    private final MovieService movieService;
 
 
     @Autowired
@@ -40,7 +40,7 @@ public class TicketService {
             CreditRefundService creditRefundService,
             EmailService emailService,
             SeatService seatService
-            // ,MovieService movieService
+            ,MovieService movieService
             ) {
         this.ticketRepository = ticketRepository;
         this.paymentService = paymentService;
@@ -49,7 +49,7 @@ public class TicketService {
         this.creditRefundService = creditRefundService;
         this.emailService = emailService;
         this.seatService = seatService;
-        // this.movieService = movieService;
+        this.movieService = movieService;
     }
 
     @Transactional
@@ -83,18 +83,20 @@ public class TicketService {
                 moneySpent);
         paymentService.addPayment(payment);
 
-        // If Movie is non public-> check if the nonpublic seats filled or not. if filled throw exception
+        int movieId = scheduleService.getMovieId(ticket.getScheduleId());
+
+        // If user is non-premium and movie is non-public, then throw exception
+        if (!movieService.isMoviePublic(movieId) && user.getMembershipStatus().equals(MembershipStatus.NON_PREMIUM) ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Non-premium users cannot book movies that are still private");
+        }
+
+        // If Movie is non public-> check if the nonpublic seats filled or not. If filled throw exception
         // otherwise book seat
-        // int movieId = scheduleService.getMovieId(ticket.getScheduleId());
-        // if(!movieService.isMoviePublic(movieId) && seatService.isNonPublicSeatsFilled(ticket.getScheduleId())  ){
-        //     throw new ResponseStatusException(HttpStatus.CONFLICT, "Please Book Movie After Public Announcement");
-        // }
+         if(!movieService.isMoviePublic(movieId) && seatService.isNonPublicSeatsFilled(ticket.getScheduleId())){
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please Book Movie After Public Announcement");
+         }
 
         // Book seat (it sets seat to be unavailable)
-        // Check if user is premium
-        /*if (user.getMembershipStatus().equals(MembershipStatus.PREMIUM) && ) {
-
-        }*/
         seatService.reserveSeat(ticket.getScheduleId(), ticket.getSeatNumber());
 
         // Send email
