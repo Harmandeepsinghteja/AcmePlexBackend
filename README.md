@@ -40,7 +40,7 @@ cd AcmePlexBackend
 -> Update application.properties with your database credentials.
     ### Configuration
     Before running the application, you need to configure the application.properties file with your specific settings. Below is a template with explanations     for each property:
-   '''
+   ''''
   # Application Name
 spring.application.name=server
 
@@ -83,7 +83,7 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 spring.mvc.cors.allowed-origins=http://127.0.0.1:5173
 
 
-   '''
+   ''''
 
    
 -> Run the backend server:
