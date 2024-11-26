@@ -57,12 +57,7 @@ public class SeatService {
 
     public void reserveSeat(int scheduleId, int seatId) {
 
-        int movieId = scheduleService.getMovieId(scheduleId);
-        if(movieService.isMoviePublic(movieId)){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Movie Not open for Public Yet");
-        }
-
-        else if(isSeatAvailable(scheduleId, seatId) && !isNonPublicSeatsFilled(scheduleId)){
+        if(isSeatAvailable(scheduleId, seatId)){
             seatRepository.reserveSeat(scheduleId, seatId);
         }
         else{
