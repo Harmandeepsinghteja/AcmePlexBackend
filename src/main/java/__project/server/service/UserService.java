@@ -54,7 +54,7 @@ public class UserService {
                     HttpStatus.NOT_FOUND, "user not found");
         }
         User user = userOptional.get();
-        return userOptional.get();
+        return user;
     }
 
     public List<User> getUsers() {

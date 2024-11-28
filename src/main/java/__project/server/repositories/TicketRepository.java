@@ -1,6 +1,6 @@
 package __project.server.repositories;
 
-import __project.server.Entity.ReservationDetails;
+import __project.server.model.ReservationDetails;
 import __project.server.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +23,4 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
             , nativeQuery = true)
     public List<ReservationDetails> findUpcomingReservedTickets(int userId);
 
-    //public Optional<Ticket> findFirst1ByIdAndUserId(int ticketId, int userId);
 }

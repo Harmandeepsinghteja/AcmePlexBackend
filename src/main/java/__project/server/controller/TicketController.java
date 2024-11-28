@@ -1,6 +1,6 @@
 package __project.server.controller;
 
-import __project.server.Entity.ReservationDetails;
+import __project.server.model.ReservationDetails;
 import __project.server.model.Ticket;
 import __project.server.service.TicketService;
 import __project.server.utils.JwtUtil;
