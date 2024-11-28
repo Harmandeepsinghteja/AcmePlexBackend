@@ -1,6 +1,6 @@
 package __project.server.service;
 
-import __project.server.Entity.ReservationDetails;
+import __project.server.model.ReservationDetails;
 import __project.server.model.Payment;
 import __project.server.model.Ticket;
 import __project.server.model.User;
@@ -151,8 +151,18 @@ public class TicketService {
 
         // Give credits
         double price = scheduleService.getPrice(ticket.getScheduleId());
-        MembershipStatus membershipStatus = userService.getUser(userId).getMembershipStatus();
-        creditRefundService.createCreditRefund(ticketId, price, membershipStatus);
+        User user = userService.getUser(userId);
+        creditRefundService.createCreditRefund(ticketId, price, user.getMembershipStatus());
+
+        // Send email
+        String emailBody = "Hello,\n"
+                + "This email is to confirm that the following ticket has been cancelled:\n\n"
+                + "Ticket Number: " + ticket.getId() + "\n"
+                + "Seat Number: " + ticket.getSeatNumber() + "\n"
+                + "Movie: " + scheduleService.getMovieName(ticket.getScheduleId()) + "\n"
+                + "Start time: " + scheduleService.getStartTime(ticket.getScheduleId());
+
+        emailService.sendEmail(user.getEmail(), "Acmeplex Ticket Cancellation Receipt", emailBody);
     }
 
     private boolean passedCancellationDeadline(Ticket ticket) {

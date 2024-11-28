@@ -1,4 +1,4 @@
-package __project.server.Entity;
+package __project.server.model;
 
 import java.util.Date;
 
@@ -8,9 +8,9 @@ public interface ReservationDetails {
     * If we want to store the results of a query where the result doesn't map to a table in the database, we have
     * to create an interface and set getters for each column of the result
     */
-    Integer getTicketId();
-    String getMovieName();
-    Integer getScreenNumber();
-    Date getStartTime();
-    Integer getSeatNumber();
+    public Integer getTicketId();
+    public String getMovieName();
+    public Integer getScreenNumber();
+    public Date getStartTime();
+    public Integer getSeatNumber();
 }
