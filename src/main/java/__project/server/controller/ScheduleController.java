@@ -33,7 +33,7 @@ public class ScheduleController {
     private SeatService seatService;
 
     @GetMapping("/showtimes/{movieId}")
-    public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getSchedules(
+    public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getShowTimes(
             @PathVariable("movieId") int movieId) {
         try{
         
