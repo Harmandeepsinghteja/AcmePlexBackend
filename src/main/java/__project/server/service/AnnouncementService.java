@@ -92,4 +92,5 @@ public class AnnouncementService {
             movieService.setPrivatelyAnnounced(movie.getId(), true);
         }
     }
+
 }
