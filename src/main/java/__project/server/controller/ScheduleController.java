@@ -3,13 +3,11 @@ package __project.server.controller;
 import __project.server.model.Schedule;
 import __project.server.service.ScheduleService;
 import __project.server.service.SeatService;
-import __project.server.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +33,8 @@ public class ScheduleController {
     private SeatService seatService;
 
     @GetMapping("/showtimes/{movieId}")
-    public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getSchedules(@PathVariable("movieId") int movieId,
-                                                                                @RequestHeader String token) {
+    public ResponseEntity<Map<String, Map<String, List<Map<String,Object>>>>> getSchedules(
+            @PathVariable("movieId") int movieId) {
         try{
         
         if(movieId < 0 ){
@@ -83,25 +81,23 @@ public class ScheduleController {
 
 
     @GetMapping("/schedule/{scheduleId}")
-    public ResponseEntity<Map<String,Object>> getSchedule(@PathVariable("scheduleId") int scheduleId,
-                                                @RequestHeader String token) {
-        int userId = JwtUtil.verifyJwt(token);
-        try{
-        Map<String,Object> result = new TreeMap<>();
-        ArrayList<ArrayList<Boolean>> seats = seatService.getSeats(scheduleId);
-        int price = scheduleService.getPrice(scheduleId);
-        Boolean areNonPublicSeatsAvailable = seatService.isNonPublicSeatsFilled(scheduleId);
-        int screenId = scheduleService.getScreenId(scheduleId);
-        Timestamp startTime = scheduleService.getStartTime(scheduleId);
-        String movieName = scheduleService.getMovieName(scheduleId);
+    public ResponseEntity<Map<String,Object>> getSchedule(@PathVariable("scheduleId") int scheduleId) {
+        try {
+            Map<String,Object> result = new TreeMap<>();
+            ArrayList<ArrayList<Boolean>> seats = seatService.getSeats(scheduleId);
+            int price = scheduleService.getPrice(scheduleId);
+            Boolean areNonPublicSeatsAvailable = seatService.isNonPublicSeatsFilled(scheduleId);
+            int screenId = scheduleService.getScreenId(scheduleId);
+            Timestamp startTime = scheduleService.getStartTime(scheduleId);
+            String movieName = scheduleService.getMovieName(scheduleId);
 
-        result.put("seats", seats);
-        result.put("price", price);
-        result.put("areNonPublicSeatsFilled", areNonPublicSeatsAvailable);
-        result.put("screenId", screenId);
-        result.put("startTime", startTime);
-        result.put("movieName", movieName);
-        return ResponseEntity.ok(result);
+            result.put("seats", seats);
+            result.put("price", price);
+            result.put("areNonPublicSeatsFilled", areNonPublicSeatsAvailable);
+            result.put("screenId", screenId);
+            result.put("startTime", startTime);
+            result.put("movieName", movieName);
+            return ResponseEntity.ok(result);
         }
         catch(Exception e){
             System.out.println(e);
