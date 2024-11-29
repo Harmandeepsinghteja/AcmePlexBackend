@@ -1,5 +1,6 @@
 package __project.server.service;
 
+import __project.server.model.Movie;
 import __project.server.model.User;
 import __project.server.repositories.UserRepository;
 import __project.server.utils.JwtUtil;
@@ -13,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,10 +21,14 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final MovieService movieService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, EmailService emailService, MovieService movieService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.movieService = movieService;
     }
 
     public String addUser(User newUser) {
@@ -37,6 +41,10 @@ public class UserService {
         User savedUser = userRepository.save(newUser);
         userRepository.flush();
         String jwt = JwtUtil.generateJwt(savedUser.getId());
+
+        // Send email for upcoming movies
+        notifyNewUser(newUser.getEmail());
+
         return jwt;
     }
 
@@ -113,6 +121,8 @@ public class UserService {
         cal.add(Calendar.YEAR, 1); // to get previous year add -1
         Timestamp expirationDate = Timestamp.from(cal.getTime().toInstant());
         user.setMembershipExpiryDate(expirationDate);
+
+        notifyNewPremiumUser(user.getEmail());
     }
 
     private void validateCredentials(String email, String password) {
@@ -131,5 +141,35 @@ public class UserService {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Email does not exist or pasword is incorrect");
         }
+    }
+
+    private void notifyNewUser(String userEmail) {
+        List<Movie> publicMovies = movieService.getPublicMovies()
+                .stream()
+                .toList();
+
+        String emailBody = "Thank you for signing up for Acmeplex!\n\n"
+                + "Here are the latest movies coming to our theatres:\n";
+        for (Movie movie : publicMovies) {
+            emailBody += (movie.getMovieName() + "\n");
+        }
+        emailBody += "\nDon't wait, book your ticket now!";
+
+        emailService.sendEmail(userEmail, "Acmeplex Registration", emailBody);
+    }
+
+    public void notifyNewPremiumUser(String userEmail) {
+        List<Movie> privateMovies = movieService.getNonPublicMovies()
+                .stream()
+                .toList();
+
+        String emailBody = "Thank you for upgrading to the Acmeplex Premium account!\n\n"
+                + "Here is an exclusive, early glimpse of the latest movies coming to our theatres:\n";
+        for (Movie movie : privateMovies) {
+            emailBody += (movie.getMovieName() + "\n");
+        }
+        emailBody += "\nDon't wait, book your ticket now!";
+
+        emailService.sendEmail(userEmail, "Acmeplex Premium Upgrade", emailBody);
     }
 }

@@ -1,6 +1,5 @@
 package __project.server.repositories;
 
-import __project.server.model.Movie;
 import __project.server.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
